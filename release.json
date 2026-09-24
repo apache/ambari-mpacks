@@ -5,6 +5,10 @@
     "generic-base": {
       "path": "mpacks/generic-base",
       "version": "1.0.0.3"
+    },
+    "nginx": {
+      "path": "mpacks/nginx",
+      "version": "1.0.0.3"
     }
   }
 }
