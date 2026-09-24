@@ -9,6 +9,10 @@
     "nginx": {
       "path": "mpacks/nginx",
       "version": "1.0.0.3"
+    },
+    "postgresql": {
+      "path": "mpacks/postgresql",
+      "version": "1.0.0.3"
     }
   }
 }
