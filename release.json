@@ -13,6 +13,10 @@
     "postgresql": {
       "path": "mpacks/postgresql",
       "version": "1.0.0.3"
+    },
+    "kyuubi": {
+      "path": "mpacks/kyuubi",
+      "version": "1.0.0.2"
     }
   }
 }

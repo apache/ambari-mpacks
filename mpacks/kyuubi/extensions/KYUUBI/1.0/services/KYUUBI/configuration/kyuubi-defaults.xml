@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configuration>
+  <property><name>kyuubi.frontend.bind.host</name><value>0.0.0.0</value><description>Listener bind address.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>kyuubi.frontend.thrift.binary.bind.port</name><value>10009</value><description>JDBC listener port.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>kyuubi.ha.addresses</name><value></value><description>Existing ZooKeeper quorum; empty derives it from the assigned ZooKeeper hosts.</description><value-attributes><empty-value-valid>true</empty-value-valid></value-attributes><on-ambari-upgrade add="true"/></property>
+  <property><name>kyuubi.ha.namespace</name><value>ambari-kyuubi</value><description>Service discovery namespace.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>spark.master</name><value>yarn</value><description>YARN integration; local[2] can isolate initial engine validation.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>spark.submit.deployMode</name><value>client</value><description>Spark deployment mode.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>spark.driver.memory</name><value>1g</value><description>Engine driver memory.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>spark.executor.memory</name><value>1g</value><description>Engine executor memory.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>spark.executor.instances</name><value>1</value><description>Initial engine executor count.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>kyuubi.engine.share.level</name><value>CONNECTION</value><description>Dedicated engine per session for isolated acceptance.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>kyuubi.engine.idle.timeout</name><value>PT1M</value><description>Release idle acceptance engines.</description><on-ambari-upgrade add="true"/></property>
+</configuration>
