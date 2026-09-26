@@ -17,6 +17,14 @@
     "kyuubi": {
       "path": "mpacks/kyuubi",
       "version": "1.0.0.7"
+    },
+    "airflow": {
+      "path": "mpacks/airflow",
+      "version": "1.0.0.4"
+    },
+    "celeborn": {
+      "path": "mpacks/celeborn",
+      "version": "1.0.0.0"
     }
   }
 }

@@ -18,18 +18,23 @@ limitations under the License.
 
 # Ambari Third-Party Management Packs
 
-This independent repository contains reference definitions, not verified software
-releases. Delivery is tracked in the Ambari core worktree's `docs/mpack` baseline.
+This independent repository contains management definitions and runtime installers.
+Core delivery is tracked in the Ambari worktree's `docs/mpack` baseline; the
+[component expansion results](docs/component-expansion-results.md) record the
+Airflow and Celeborn basic acceptance scope.
 The current acceptance target is Rocky Linux 8 on aarch64 with systemd.
 The existing Ubuntu definitions are retained but Ubuntu deployment and testing
 are excluded from this run. Nginx and PostgreSQL use operating-system packages
 without Hadoop or stack-select. [Kyuubi](mpacks/kyuubi/README.md) extends the
 BIGTOP environment and uses its existing Spark, Hadoop and ZooKeeper services.
-Platform adaptations and new Kyuubi definitions are not yet live-verified.
+Airflow uses an isolated Python environment and an external PostgreSQL 14-18
+database. Celeborn uses a pinned official binary with a single master topology.
+MinIO remains a [definition draft](mpacks/minio/README.md), without installation
+or an entry in deployment bundles, as explicitly requested.
 
 Install the version-pinned `ambari-mpack` tooling published by Ambari core.
 `release.json` selects the current package sources and exact management-definition
-versions. Build with `ambari-mpack build --all --bundle infrastructure` and upload
+versions. Build with `ambari-mpack build --all --bundle mpackstore` and upload
 with the same HTTP-only client. No command in this repository modifies the server
 filesystem or database. Configure software sources through Ambari repository
 records; package versions do not stand in for installed software observations.
@@ -59,10 +64,11 @@ ambari-mpack --server "$AMBARI_SERVER_URL" services
 
 Individual packages retain their versions and can be updated independently.
 
-The full store includes generic-base, nginx, postgresql and kyuubi. The
-`infrastructure` profile remains the three GENERIC packages. Their Rocky
-adaptation, complete Rocky repositories and Agent defaults are release `1.0.0.3`;
-Kyuubi is `1.0.0.2`. Earlier imported releases are retained for provenance. Mixed-platform
+The full store includes generic-base, nginx, postgresql, kyuubi,
+[airflow](mpacks/airflow/README.md) and [celeborn](mpacks/celeborn/README.md).
+`release.json` is the authoritative version index. The `infrastructure` profile
+remains generic-base, nginx and postgresql. Earlier imported releases are retained
+for provenance. Mixed-platform
 imports do not bind every package to one stack: choose services for their
 compatible destination through the imported service catalog.
 Importing a newer store does not silently replace active definitions or upgrade
@@ -78,3 +84,8 @@ The PostgreSQL reference preserves source data. BACKUP produces a verified,
 operation-associated archive backup; RESTORE requires an explicit isolated target
 and will not overwrite a source database. Automatic failover, multi-instance
 identity, and arbitrary frontend plugins are not provided.
+
+For further additions, see the [component expansion plan](docs/component-expansion-plan.md).
+Trino, an analytical database such as Doris or ClickHouse, SeaTunnel and Superset
+are the suggested next capabilities. Existing BIGTOP services should not acquire
+duplicate providers as a side effect of these additions.

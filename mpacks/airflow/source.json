@@ -1,0 +1,13 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "schema_version": 1,
+  "software_version": "3.3.2",
+  "python": "3.11",
+  "distribution": "apache-airflow[postgres,fab]",
+  "constraints": {
+    "url": "https://raw.githubusercontent.com/apache/airflow/constraints-3.3.2/constraints-3.11.txt",
+    "sha256": "f9a3a164211d2dcf3243b803995f538003e6061dbf9954622dabbe7ff606f0f7"
+  },
+  "topology": "LOCAL_EXECUTOR_SINGLE_HOST",
+  "validation_status": "IMPLEMENTED_PENDING_ACCEPTANCE"
+}

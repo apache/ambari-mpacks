@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configuration>
+  <property><name>master_host</name><value></value><description>Leave empty to use the single assigned Celeborn Master.</description><value-attributes><empty-value-valid>true</empty-value-valid></value-attributes><on-ambari-upgrade add="true"/></property>
+  <property><name>worker_hosts</name><value></value><description>Leave empty to use assigned Worker hosts, or provide their exact comma-separated hostnames.</description><value-attributes><empty-value-valid>true</empty-value-valid></value-attributes><on-ambari-upgrade add="true"/></property>
+  <property><name>master_port</name><value>9097</value><description>master port; distinct from other component ports.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>master_http_port</name><value>9098</value><description>master http port; distinct from other component ports.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>worker_rpc_port</name><value>10001</value><description>worker rpc port; distinct from other component ports.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>worker_push_port</name><value>10002</value><description>worker push port; distinct from other component ports.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>worker_fetch_port</name><value>10003</value><description>worker fetch port; distinct from other component ports.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>worker_replicate_port</name><value>10004</value><description>worker replicate port; distinct from other component ports.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>worker_http_port</name><value>9096</value><description>worker http port; distinct from other component ports.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>java_home</name><value>/usr/lib/jvm/java-17-openjdk</value><description>JDK 17 used by Celeborn.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>master_memory</name><value>512m</value><description>Master JVM heap size.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>worker_memory</name><value>512m</value><description>Worker JVM heap size.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>worker_direct_memory</name><value>512m</value><description>Worker direct memory.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>storage_directory</name><value>/var/lib/celeborn/shuffle</value><description>Persistent shuffle directory; never deleted during definition retirement.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>binary_url</name><value>https://archive.apache.org/dist/celeborn/celeborn-0.7.0/apache-celeborn-0.7.0-bin.tgz</value><description>Official archive or HTTPS mirror of exactly the pinned SHA-512.</description><on-ambari-upgrade add="true"/></property>
+</configuration>

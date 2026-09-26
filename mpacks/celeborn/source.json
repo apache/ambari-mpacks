@@ -1,0 +1,11 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "schema_version": 1,
+  "software_version": "0.7.0",
+  "binary": {
+    "url": "https://archive.apache.org/dist/celeborn/celeborn-0.7.0/apache-celeborn-0.7.0-bin.tgz",
+    "sha512": "58e9bac129e1e817c3d97d69dbbe30baeddc07ecf7e109bda3acdb8b7a8d55380aec663d7c5862b2b770c8c120b78ffc136dde80e6dfe0d6e0519d0815c4973d"
+  },
+  "topology": "SINGLE_MASTER",
+  "validation_status": "IMPLEMENTED_PENDING_ACCEPTANCE"
+}
