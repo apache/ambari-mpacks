@@ -22,11 +22,12 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "shared"))
 source = ROOT / "mpacks/kyuubi/extensions/KYUUBI/1.0/services/KYUUBI/package/scripts/observer.py"
+sys.path.insert(0, str(source.parent))
 spec = importlib.util.spec_from_file_location("kyuubi_observer", str(source))
 observer = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(observer)
@@ -57,6 +58,49 @@ def result():
 
 
 class KyuubiTests(unittest.TestCase):
+    def test_post_command_status_does_not_replace_the_command_receipt(self):
+        class Fail(Exception):
+            pass
+        class NotRunning(Exception):
+            pass
+        class Script:
+            @staticmethod
+            def get_config():
+                values = parameters()
+                return {"taskId": 57, "commandParams": {
+                    "mpack_definition_snapshot": request()["definition_snapshot"],
+                    "mpack_execution_id": request()["execution_id"]}, "configurations": {
+                    "kyuubi-env": {key: value for key, value in values.items() if key != "defaults"},
+                    "kyuubi-defaults": values["defaults"]}}
+            def put_structured_out(self, observation):
+                self.published = observation
+
+        module_spec = importlib.util.spec_from_file_location("kyuubi_service_test", str(source.with_name("service.py")))
+        module = importlib.util.module_from_spec(module_spec)
+        with patch.dict(sys.modules, {
+                "resource_management.core.exceptions": SimpleNamespace(Fail=Fail, ComponentIsNotRunning=NotRunning),
+                "resource_management.libraries.script.script": SimpleNamespace(Script=Script)}):
+            module_spec.loader.exec_module(module)
+        service = module.Kyuubi()
+        for command, health in (("start", "APPLIED"), ("stop", "UNRESOLVED")):
+            def run(arguments, **options):
+                observed = json.loads(Path(arguments[2]).read_text())
+                outcome = health if observed["action"] == "health" else "APPLIED"
+                Path(arguments[3]).write_text(json.dumps(dict(observed, outcome=outcome,
+                    observations={"unit": observer.UNIT})))
+                return SimpleNamespace(returncode=0 if outcome == "APPLIED" else 1)
+            with self.subTest(command=command), patch.object(module.subprocess, "run", side_effect=run):
+                getattr(service, command)(None)
+                if health == "UNRESOLVED":
+                    with self.assertRaises(NotRunning):
+                        service.status(None)
+                else:
+                    service.status(None)
+                observed = service.published["software_observation"]
+                self.assertEqual(observed["action"], command)
+                self.assertEqual(observed["task_id"], 57)
+                self.assertEqual(observed["outcome"], "APPLIED")
+
     def run_jdbc(self, value, returncode=0):
         def subprocess(command, **options):
             if value is not None:
@@ -73,6 +117,27 @@ class KyuubiTests(unittest.TestCase):
     def test_process_success_without_result_is_not_sql_success(self):
         with self.assertRaises(RuntimeError):
             self.run_jdbc(None)
+
+    def test_failed_sql_preserves_bounded_diagnostic_and_rejects_foreign_lineage(self):
+        diagnostic = {"error_type": "java.sql.SQLException", "stage": "DESCRIBE_SESSION",
+                      "sql_state": "42S02", "vendor_code": 1}
+        value = dict(result(), outcome="UNRESOLVED",
+                     observations=dict(diagnostic, message="not retained"))
+        for returncode in (0, 1):
+            with self.assertRaises(observer.SqlObservationError) as failure:
+                self.run_jdbc(value, returncode)
+            self.assertEqual(failure.exception.observations, diagnostic)
+        for key, foreign in (("task_id", 99), ("definition_snapshot", "b" * 64),
+                             ("execution_id", "22345678-1234-4234-8234-123456789abc"),
+                             ("schema_version", True), ("action", "health")):
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.run_jdbc(dict(value, **{key: foreign}), 1)
+
+    def test_failure_result_is_not_accepted_by_default(self):
+        value = dict(result(), outcome="UNRESOLVED")
+        with self.assertRaises(ValueError):
+            observer.validate_result(request(), value)
+        self.assertEqual(observer.validate_result(request(), value, allow_unresolved=True), value)
 
     def test_foreign_operation_or_invalid_result_is_rejected(self):
         mutations = [
@@ -130,6 +195,30 @@ class KyuubiTests(unittest.TestCase):
                 observer, "unit_observation", return_value={"unit": observer.UNIT, "active_state": "inactive"}):
             with self.assertRaises(RuntimeError):
                 observer.execute(dict(request(), action="health"))
+
+    def test_server_unit_accepts_the_launchers_normal_sigterm_exit(self):
+        account = SimpleNamespace(pw_uid=os.getuid(), pw_gid=os.getgid())
+        bus, manager = MagicMock(), MagicMock()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            values = parameters()
+            for key, binary in (("kyuubi_home", "kyuubi"), ("spark_home", "spark-submit"), ("java_home", "java")):
+                values[key] = str(root / key)
+                executable = Path(values[key]) / "bin" / binary
+                executable.parent.mkdir(parents=True)
+                executable.touch(mode=0o755)
+            (root / "units").mkdir()
+            with patch.object(observer, "CONFIG", root / "conf"), patch.object(observer, "DATA", root / "data"), patch.object(
+                    observer, "LOGS", root / "logs"), patch.object(observer, "UNITS", root / "units"), patch.object(
+                    observer.pwd, "getpwnam", return_value=account), patch.dict(sys.modules, {
+                        "dbus": SimpleNamespace(SystemBus=lambda: bus, Interface=lambda *args: manager)}):
+                result = observer.configure(values)
+            unit = (root / "units" / observer.UNIT).read_text()
+            self.assertIn("SuccessExitStatus=143\n", unit)
+            self.assertIn("KillMode=control-group\n", unit)
+            self.assertEqual(len(result["files"]), 3)
+            manager.Reload.assert_called_once()
+            bus.close.assert_called_once()
 
 
 if __name__ == "__main__":

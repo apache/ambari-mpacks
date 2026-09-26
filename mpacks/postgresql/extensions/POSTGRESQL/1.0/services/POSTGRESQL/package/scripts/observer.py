@@ -42,6 +42,35 @@ def connect(name):
                             connect_timeout=10)
 
 
+def validate_backup(record, backup_id, source):
+    if not isinstance(record, dict) or type(record.get("schema_version")) is not int or record["schema_version"] != 1:
+        raise ValueError("Invalid backup descriptor schema")
+    if record.get("backup_id") != backup_id or record.get("execution_id") != backup_id:
+        raise ValueError("Backup descriptor belongs to another execution")
+    if str(uuid.UUID(backup_id)) != backup_id:
+        raise ValueError("A canonical backup identity is required")
+    for key in ("definition_snapshot", "payload_digest"):
+        if not isinstance(record.get(key), str) or not re.fullmatch(r"[a-f0-9]{64}", record[key]):
+            raise ValueError("Backup descriptor has no valid content identity")
+    if type(record.get("task_id")) is not int or record["task_id"] <= 0:
+        raise ValueError("Backup descriptor has no task identity")
+    observed = record.get("source")
+    if not isinstance(observed, dict) or observed.get("database") != source:
+        raise ValueError("Backup identity does not match the requested source")
+    if not isinstance(observed.get("instance_id"), str) or not re.fullmatch(r"[0-9]+", observed["instance_id"]):
+        raise ValueError("Backup descriptor has no source instance identity")
+    if type(observed.get("server_version_num")) is not int or observed["server_version_num"] < 100000:
+        raise ValueError("Backup descriptor has no supported source version")
+    if not isinstance(observed.get("tables"), dict):
+        raise ValueError("Backup descriptor has no source table inventory")
+    for table, value in observed["tables"].items():
+        if (not isinstance(table, str) or not table or not isinstance(value, dict)
+                or type(value.get("rows")) is not int or value["rows"] < 0
+                or not isinstance(value.get("digest"), str) or not re.fullmatch(r"[a-f0-9]{64}", value["digest"])):
+            raise ValueError("Invalid backup table observation")
+    return record
+
+
 def inventory(connection):
     import psycopg2.sql as sql
 
@@ -116,9 +145,7 @@ def worker(request):
         payload = base / (backup_id + ".dump")
         if descriptor.is_symlink() or payload.is_symlink():
             raise ValueError("Backup files cannot be symbolic links")
-        record = json.loads(descriptor.read_text(encoding="utf-8"))
-        if record.get("schema_version") != 1 or record.get("backup_id") != backup_id or record.get("source", {}).get("database") != source:
-            raise ValueError("Backup identity does not match the requested source")
+        record = validate_backup(json.loads(descriptor.read_text(encoding="utf-8")), backup_id, source)
         if hashlib.sha256(payload.read_bytes()).hexdigest() != record["payload_digest"]:
             raise ValueError("Backup payload digest does not match")
         import psycopg2.sql as sql

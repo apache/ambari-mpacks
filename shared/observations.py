@@ -76,14 +76,15 @@ def unit_observation(name, action=None):
             if not job_result or job_result["unit"] != name or job_result["result"] != "done":
                 raise RuntimeError("Systemd job has no matching successful result")
             job_result = dict(job_result, job_path=job_path)
-        path = manager.GetUnit(name)
+        # Stopped units may already have been garbage-collected by systemd.
+        path = manager.LoadUnit(name)
         properties = dbus.Interface(bus.get_object("org.freedesktop.systemd1", path),
                                     "org.freedesktop.DBus.Properties")
         observation = properties.GetAll("org.freedesktop.systemd1.Unit")
         identity = str(observation["Id"])
         state = str(observation["ActiveState"])
-        if identity != name:
-            raise RuntimeError("Systemd returned a foreign unit identity")
+        if identity != name or str(observation["LoadState"]) != "loaded":
+            raise RuntimeError("Systemd returned a foreign or missing unit")
         if action in {"start", "reload"} and state != "active":
             raise RuntimeError("Systemd unit is not active")
         if action == "stop" and state != "inactive":

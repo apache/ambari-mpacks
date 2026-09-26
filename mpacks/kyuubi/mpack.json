@@ -3,7 +3,7 @@
   "schema_version": 1,
   "type": "full-release",
   "name": "kyuubi",
-  "version": "1.0.0.2",
+  "version": "1.0.0.7",
   "artifacts": [
     {
       "name": "kyuubi-definitions",

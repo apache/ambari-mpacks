@@ -8,15 +8,15 @@
     },
     "nginx": {
       "path": "mpacks/nginx",
-      "version": "1.0.0.3"
+      "version": "1.0.0.4"
     },
     "postgresql": {
       "path": "mpacks/postgresql",
-      "version": "1.0.0.3"
+      "version": "1.0.0.5"
     },
     "kyuubi": {
       "path": "mpacks/kyuubi",
-      "version": "1.0.0.2"
+      "version": "1.0.0.7"
     }
   }
 }

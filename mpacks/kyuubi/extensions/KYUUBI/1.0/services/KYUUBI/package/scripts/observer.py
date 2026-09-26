@@ -24,12 +24,20 @@ import tempfile
 import uuid
 from pathlib import Path
 
-from observations import atomic_json, package_observation, unit_observation, validate_request, validate_result
+from observations import atomic_json, package_observation, unit_observation, validate_request
+from results import validate_result
 
 UNIT = "ambari-kyuubi.service"
 CONFIG = Path("/etc/kyuubi/ambari")
 DATA = Path("/var/lib/kyuubi")
 LOGS = Path("/var/log/kyuubi")
+UNITS = Path("/etc/systemd/system")
+
+
+class SqlObservationError(RuntimeError):
+    def __init__(self, observations):
+        super().__init__("JDBC check did not complete")
+        self.observations = observations
 
 
 def settings(parameters):
@@ -122,8 +130,8 @@ def configure(parameters, client=False):
                 "WorkingDirectory=" + str(DATA) + "\n"
                 "Environment=KYUUBI_CONF_DIR=" + str(CONFIG) + "\n"
                 "ExecStart=" + paths["kyuubi_home"] + "/bin/kyuubi run\n"
-                "Restart=no\nTimeoutStopSec=60\nKillMode=control-group\nUMask=0027\n")
-        observations.append(write_owned(Path("/etc/systemd/system") / UNIT, unit, pwd.getpwnam("root")))
+                "Restart=no\nTimeoutStopSec=60\nKillMode=control-group\nSuccessExitStatus=143\nUMask=0027\n")
+        observations.append(write_owned(UNITS / UNIT, unit, pwd.getpwnam("root")))
         import dbus
         bus = dbus.SystemBus()
         try:
@@ -151,8 +159,13 @@ def sql_observation(request):
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=420, check=False)
         if not result.is_file() or result.stat().st_size > 65536:
             raise RuntimeError("JDBC check has no bounded result")
-        observation = validate_result(request, json.loads(result.read_text(encoding="utf-8")))
+        observation = validate_result(request, json.loads(result.read_text(encoding="utf-8")),
+                                      allow_unresolved=True)
         sql = observation["observations"]
+        if observation["outcome"] == "UNRESOLVED":
+            diagnostic = {key: sql[key] for key in ("error_type", "stage", "sql_state", "vendor_code")
+                          if key in sql}
+            raise SqlObservationError(diagnostic or {"error_type": "MissingJdbcDiagnostic"})
         if process.returncode != 0 or sql.get("sum") != 45 or type(sql.get("sum")) is not int or sql.get("rows") != 10 or type(sql.get("rows")) is not int:
             raise RuntimeError("JDBC result values do not match")
         for key in ("session_id", "operation_id"):
@@ -189,6 +202,7 @@ if __name__ == "__main__":
         result = execute(request)
     except Exception as error:
         atomic_json(sys.argv[2], dict(request, outcome="UNRESOLVED",
-                                     observations={"error_type": type(error).__name__}))
+                                     observations=(error.observations if isinstance(error, SqlObservationError)
+                                                   else {"error_type": type(error).__name__})))
         raise SystemExit(1)
     atomic_json(sys.argv[2], result)

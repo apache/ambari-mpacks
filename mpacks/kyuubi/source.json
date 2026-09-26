@@ -6,6 +6,10 @@
   "commit": "5f48f2ef5b2532383a1e21984eec94ac451caf85",
   "service_definition_version": "1.0",
   "software_version": "1.9.4",
+  "binary": {
+    "url": "https://archive.apache.org/dist/kyuubi/kyuubi-1.9.4/apache-kyuubi-1.9.4-bin.tgz",
+    "sha512": "57f1cf51287ffc813db0170814569f1f2f18dc4596ffae68ba75ed48f4b13c5d65631cee12d6f30f953d8fc95366f47465d74ba3ad9075a1f005259daa7cd147"
+  },
   "platforms": [
     {
       "os": "rocky",
@@ -13,5 +17,5 @@
       "architecture": "aarch64"
     }
   ],
-  "validation_status": "IMPLEMENTED_UNVERIFIED"
+  "validation_status": "OFFICIAL_BINARY_PINNED"
 }

@@ -21,11 +21,12 @@ from pathlib import Path
 
 from resource_management.core.exceptions import ComponentIsNotRunning, Fail
 from resource_management.libraries.script.script import Script
-from observations import observer_python, validate_result
+from observations import observer_python
+from results import validate_result
 
 
 class Kyuubi(Script):
-    def observe(self, action):
+    def observe(self, action, publish=True):
         config = Script.get_config()
         command = config["commandParams"]
         parameters = dict(config["configurations"]["kyuubi-env"])
@@ -51,12 +52,14 @@ class Kyuubi(Script):
             if not result.is_file() or result.stat().st_size > 1024 * 1024:
                 raise Fail("Kyuubi action has no bounded structured result")
             try:
-                observation = validate_result(request, json.loads(result.read_text(encoding="utf-8")))
+                observation = validate_result(request, json.loads(result.read_text(encoding="utf-8")),
+                                              allow_unresolved=True)
             except (ValueError, TypeError) as error:
                 raise Fail(str(error))
-            if process.returncode != 0:
+            if publish:
+                self.put_structured_out({"software_observation": observation})
+            if process.returncode != 0 or observation["outcome"] != "APPLIED":
                 raise Fail("Kyuubi action did not complete")
-            self.put_structured_out({"software_observation": observation})
             return observation
 
     def install(self, env):
@@ -77,7 +80,7 @@ class Kyuubi(Script):
 
     def status(self, env):
         try:
-            self.observe("health")
+            self.observe("health", publish=False)
         except Fail:
             raise ComponentIsNotRunning()
 

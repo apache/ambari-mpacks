@@ -31,6 +31,47 @@ def request():
 
 
 class ObservationTests(unittest.TestCase):
+    def systemd(self, unit="nginx.service", state="inactive", load="loaded", job_unit="nginx.service",
+                job_path="/job/7", job_result="done"):
+        manager, properties, bus = MagicMock(), MagicMock(), MagicMock()
+        callbacks = []
+        bus.add_signal_receiver.side_effect = lambda callback, **kw: callbacks.append(callback) or MagicMock()
+        bus.get_object.side_effect = lambda destination, path: properties if path == "/unit/nginx" else manager
+        manager.GetUnit.side_effect = RuntimeError("Stopped unit was garbage-collected")
+        manager.LoadUnit.return_value = "/unit/nginx"
+        properties.GetAll.return_value = {"Id": unit, "ActiveState": state, "LoadState": load}
+
+        def stop(name, mode):
+            callbacks[0](99, "/job/99", "other.service", "done")
+            callbacks[0](7, job_path, job_unit, job_result)
+            return "/job/7"
+
+        manager.StopUnit.side_effect = stop
+        dbus = SimpleNamespace(SystemBus=lambda: bus, Interface=lambda obj, interface: obj)
+        glib = SimpleNamespace(MainContext=SimpleNamespace(default=MagicMock()))
+        with patch.dict(sys.modules, {"dbus": dbus, "dbus.mainloop": SimpleNamespace(),
+                "dbus.mainloop.glib": SimpleNamespace(DBusGMainLoop=lambda **kw: None),
+                "gi": SimpleNamespace(), "gi.repository": SimpleNamespace(GLib=glib)}), patch.object(
+                observations.time, "monotonic", side_effect=[0, 61]):
+            try:
+                return observations.unit_observation("nginx.service", "stop")
+            finally:
+                manager.GetUnit.assert_not_called()
+                manager.Unsubscribe.assert_called_once()
+                bus.close.assert_called_once()
+
+    def test_stopped_unit_is_loaded_for_authoritative_inactive_observation(self):
+        value = self.systemd()
+        self.assertEqual(value, {"unit": "nginx.service", "active_state": "inactive",
+                                "job": {"job_id": 7, "job_path": "/job/7",
+                                        "unit": "nginx.service", "result": "done"}})
+
+    def test_stop_rejects_missing_foreign_failed_or_unmatched_observations(self):
+        for change in ({"unit": "other.service"}, {"state": "active"}, {"load": "not-found"},
+                       {"job_unit": "other.service"}, {"job_result": "failed"}, {"job_path": "/job/6"}):
+            with self.subTest(change=change), self.assertRaises(RuntimeError):
+                self.systemd(**change)
+
     def test_rpm_identity_comes_from_unique_database_record(self):
         header = {"name": "nginx", "version": "1.14.1", "release": "9.el8",
                   "epoch": 1, "arch": "aarch64"}

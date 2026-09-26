@@ -5,7 +5,7 @@
     {
       "source": "shared/observations.py",
       "target": "extensions/POSTGRESQL/1.0/services/POSTGRESQL/package/scripts/observations.py",
-      "digest": "84cd47342db6d8cd7548afae398c4cb1ec47bf4b09f22d598aa06c167a70112c"
+      "digest": "8fb22532d4012faf25c2f38a56bbd713738016716fa6c0606fb56b46ce194a99"
     }
   ]
 }

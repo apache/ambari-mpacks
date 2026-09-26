@@ -21,6 +21,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
 import java.util.Properties;
@@ -68,6 +69,7 @@ public class KyuubiSqlCheck {
     Path destination = Path.of(arguments[5]);
     String output;
     boolean success = false;
+    String stage = "CONNECT";
     try {
       Class.forName("org.apache.kyuubi.jdbc.KyuubiHiveDriver");
       Properties properties = new Properties();
@@ -86,9 +88,10 @@ public class KyuubiSqlCheck {
           throw new IllegalStateException("Unexpected JDBC driver");
         }
         driverVersion = connection.getMetaData().getDriverVersion();
+        stage = "DESCRIBE_SESSION";
         try (Statement statement = connection.createStatement()) {
           statement.setQueryTimeout(120);
-          try (ResultSet result = statement.executeQuery("DESCRIBE SESSION")) {
+          try (ResultSet result = statement.executeQuery("KYUUBI DESCRIBE SESSION")) {
             if (!result.next()) {
               throw new IllegalStateException("Missing session identity");
             }
@@ -99,6 +102,7 @@ public class KyuubiSqlCheck {
           }
         }
         try (KyuubiStatement statement = (KyuubiStatement) connection.createStatement()) {
+          stage = "EXECUTE_QUERY";
           statement.setQueryTimeout(180);
           try (ResultSet result = statement.executeQuery(
               "SELECT sum(id) AS total, count(*) AS rows, '" + execution
@@ -125,6 +129,7 @@ public class KyuubiSqlCheck {
             }
           }
         }
+        stage = "CLOSE_RESOURCES";
       }
       output = prefix + ",\"outcome\":\"APPLIED\",\"observations\":{"
           + "\"session_id\":" + string(session) + ",\"operation_id\":" + string(operation)
@@ -134,7 +139,13 @@ public class KyuubiSqlCheck {
       success = true;
     } catch (Exception failure) {
       output = prefix + ",\"outcome\":\"UNRESOLVED\",\"observations\":{\"error_type\":"
-          + string(failure.getClass().getName()) + "}}";
+          + string(failure.getClass().getName()) + ",\"stage\":" + string(stage);
+      if (failure instanceof SQLException) {
+        SQLException sql = (SQLException) failure;
+        output += ",\"sql_state\":" + (sql.getSQLState() == null ? "null" : string(sql.getSQLState()))
+            + ",\"vendor_code\":" + sql.getErrorCode();
+      }
+      output += "}}";
     }
     Path temporary = Files.createTempFile(destination.getParent(), ".jdbc-", ".json");
     Files.writeString(temporary, output, StandardCharsets.UTF_8);

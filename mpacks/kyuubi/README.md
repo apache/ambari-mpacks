@@ -25,16 +25,29 @@ bundle. Import does not install software or activate bindings.
 | --- | --- |
 | Upstream | Apache Kyuubi v1.9.4 |
 | Commit | 5f48f2ef5b2532383a1e21984eec94ac451caf85 |
-| Definition release | kyuubi/1.0.0.2 |
+| Definition release | kyuubi/1.0.0.7 |
 | Extension and service definition | KYUUBI/1.0 |
 | Initial target | Rocky Linux 8, aarch64, BIGTOP/3.3.0 |
 | Engine | Spark SQL, Scala 2.12, Spark 3.5 family |
 | JDK | 17 |
-| Verification | Python contract tests and JDBC helper compilation passed; live acceptance pending |
+| Verification | Runtime results and remaining coverage are recorded in the core acceptance ledger |
 
 Ubuntu is outside this acceptance. Existing runtime images and compatible RPMs
-are reused. Kyuubi's RPM uses deploy's single-component build; the mpack itself
-contains definitions and scripts, not software binaries.
+are reused. The mpack contains definitions and scripts, not software binaries.
+`source.json` pins the official Apache binary URL and SHA-512. In an existing
+Rocky 8 builder with RPM Python bindings and `rpmbuild`, package that archive:
+
+```sh
+/usr/libexec/platform-python tools/package_kyuubi_binary.py \
+  /inputs/apache-kyuubi-1.9.4-bin.tgz /outputs/kyuubi-official
+```
+
+The output directory must be new. The tool verifies the archive before building
+`kyuubi_3_3_0-1.9.4-2.official.el8.noarch.rpm` and emits a JSON receipt with the
+source digest, RPM header identity and RPM digest. Publish that RPM into the
+repository selected by the target stack before installing the service. This
+step packages existing upstream binaries and performs no source compilation.
+The earlier source-built `1.el8` RPM is historical acceptance input only.
 
 The acceptance build reuses the completed Spark 3.5.8 payload from the existing
 Rocky 9 aarch64 build. An isolated Bigtop recipe verifies RPM receipts and file
@@ -73,13 +86,17 @@ also creates `ambari-kyuubi.service`, running upstream `bin/kyuubi run` as
 `kyuubi`. START configures first and verifies the matching systemd job/unit.
 STOP verifies the stop job. VERSION_CHECK queries the RPM database. Client
 installation/configuration does not create a daemon.
+The unit accepts exit status 143 from the foreground launcher on SIGTERM;
+the observer still requires the matching successful stop job and inactive unit.
 
 SERVICE_CHECK and SQL_CHECK open a real JDBC session, read the typed
-`DESCRIBE SESSION` result, and aggregate `range(10)`. They require sum 45,
+`KYUUBI DESCRIBE SESSION` result, and aggregate `range(10)`. They require sum 45,
 count 10 and the exact Ambari execution UUID echoed through SQL. The result
 includes session UUID, server operation UUID, engine ID, driver version and
 successful resource closure. A private result file separates observations from
 diagnostic stdout. Missing, malformed, failed or foreign results fail the action.
+Failed JDBC observations retain the execution identity, stage, exception class,
+SQL state and vendor code without copying exception messages or credentials.
 
 The pinned upstream contracts are `DescribeSession.scala`,
 `KyuubiStatement.getYarnATSGuid()`, `KyuubiConnection.getEngineId()` and the
