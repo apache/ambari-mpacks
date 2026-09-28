@@ -1,0 +1,13 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "schema_version": 1,
+  "software_version": "483",
+  "source_tag": "483",
+  "source_commit": "50b0b50b75abd47f830b7805ee1b51716eb4065e",
+  "binary": {
+    "url": "https://github.com/trinodb/trino/releases/download/483/trino-server-483.tar.gz",
+    "sha512": "5b6920dcb807608e13bb0f2d6d062233ffafe627d035ac37c37da28dbfd0933f10a37871505247ef65e1f973f503b341f9038d0a52773e0ceb0dcf6d037fb6ee"
+  },
+  "topology": "SINGLE_COORDINATOR_OPTIONAL_WORKERS",
+  "validation_status": "IMPLEMENTED_PENDING_ACCEPTANCE"
+}

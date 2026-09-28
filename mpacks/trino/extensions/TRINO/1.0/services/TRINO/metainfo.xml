@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<metainfo><schemaVersion>2.0</schemaVersion><services><service>
+  <name>TRINO</name><displayName>Trino</displayName><version>483</version>
+  <comment>One coordinator and optional workers. Java 25 must be installed at the configured path. The coordinator can execute queries without dedicated workers.</comment>
+  <components>
+    <component><name>TRINO_COORDINATOR</name><displayName>Trino Coordinator</displayName><category>MASTER</category><cardinality>1</cardinality><versionAdvertised>false</versionAdvertised><commandScript><script>scripts/coordinator.py</script><scriptType>PYTHON</scriptType><timeout>7200</timeout></commandScript><customCommands><customCommand><name>VERSION_CHECK</name><commandScript><script>scripts/coordinator.py</script><scriptType>PYTHON</scriptType><timeout>7200</timeout></commandScript></customCommand></customCommands></component>
+    <component><name>TRINO_WORKER</name><displayName>Trino Worker</displayName><category>SLAVE</category><cardinality>0+</cardinality><versionAdvertised>false</versionAdvertised><commandScript><script>scripts/worker.py</script><scriptType>PYTHON</scriptType><timeout>7200</timeout></commandScript><customCommands><customCommand><name>VERSION_CHECK</name><commandScript><script>scripts/worker.py</script><scriptType>PYTHON</scriptType><timeout>7200</timeout></commandScript></customCommand></customCommands></component>
+  </components>
+  <osSpecifics><osSpecific><osFamily>redhat8</osFamily><packages><package><name>python3-dbus</name></package><package><name>python3-gobject-base</name></package></packages></osSpecific></osSpecifics>
+  <commandScript><script>scripts/service_check.py</script><scriptType>PYTHON</scriptType><timeout>900</timeout></commandScript>
+  <configuration-dependencies><config-type>trino-env</config-type></configuration-dependencies>
+  <quickLinksConfigurations><quickLinksConfiguration><fileName>quicklinks.json</fileName><default>true</default></quickLinksConfiguration></quickLinksConfigurations>
+</service></services></metainfo>
