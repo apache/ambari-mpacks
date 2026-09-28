@@ -6,6 +6,11 @@
       "source": "shared/observations.py",
       "target": "extensions/KYUUBI/1.0/services/KYUUBI/package/scripts/observations.py",
       "digest": "8fb22532d4012faf25c2f38a56bbd713738016716fa6c0606fb56b46ce194a99"
+    },
+    {
+      "source": "shared/native_config.py",
+      "target": "extensions/KYUUBI/1.0/services/KYUUBI/package/scripts/native_config.py",
+      "digest": "897599c88c2fbbe3d238e02b519ae1b89c09f57bada53a688e216ac79484308e"
     }
   ]
 }

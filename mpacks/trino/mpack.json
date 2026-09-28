@@ -3,7 +3,7 @@
   "schema_version": 1,
   "type": "full-release",
   "name": "trino",
-  "version": "1.0.0.2",
+  "version": "1.0.0.4",
   "description": "Trino 483 coordinator and optional workers on BIGTOP",
   "artifacts": [{"name": "trino-definitions", "type": "extension-definitions", "source_dir": "extensions"}],
   "dependencies": []

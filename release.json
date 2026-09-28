@@ -16,35 +16,35 @@
     },
     "kyuubi": {
       "path": "mpacks/kyuubi",
-      "version": "1.0.0.7"
+      "version": "1.0.0.11"
     },
     "airflow": {
       "path": "mpacks/airflow",
-      "version": "1.0.0.4"
+      "version": "1.0.0.6"
     },
     "celeborn": {
       "path": "mpacks/celeborn",
-      "version": "1.0.0.0"
+      "version": "1.0.0.2"
     },
     "dolphinscheduler": {
       "path": "mpacks/dolphinscheduler",
-      "version": "1.0.0.3"
+      "version": "1.0.0.5"
     },
     "trino": {
       "path": "mpacks/trino",
-      "version": "1.0.0.2"
+      "version": "1.0.0.4"
     },
     "doris": {
       "path": "mpacks/doris",
-      "version": "1.0.0.5"
+      "version": "1.0.0.7"
     },
     "elasticsearch": {
       "path": "mpacks/elasticsearch",
-      "version": "1.0.0.3"
+      "version": "1.0.0.5"
     },
     "minio": {
       "path": "mpacks/minio",
-      "version": "1.0.0.3"
+      "version": "1.0.0.5"
     }
   }
 }

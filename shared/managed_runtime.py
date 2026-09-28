@@ -202,7 +202,11 @@ def main(execute):
         observed = execute(request)
         value = result(request, "APPLIED", observed)
     except Exception as error:
-        value = result(request, "UNRESOLVED", {"error_type": type(error).__name__})
+        from native_config import ConfigurationError
+        observation = {"error_type": type(error).__name__}
+        if isinstance(error, ConfigurationError):
+            observation["configuration_error"] = str(error)
+        value = result(request, "UNRESOLVED", observation)
         atomic_json(sys.argv[2], value)
         raise SystemExit(1)
     atomic_json(sys.argv[2], value)

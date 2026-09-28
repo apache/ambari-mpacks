@@ -67,17 +67,16 @@ class NewReleaseTests(unittest.TestCase):
                     self.assertEqual(link["port"]["site"], name + "-env")
                     self.assertIn(link["port"]["http_property"], properties)
 
-    def test_new_shared_file_locks_match_without_changing_published_packs(self):
-        for name in NEW:
+    def test_shared_file_locks_match_current_release(self):
+        for name in NEW + ("airflow", "celeborn", "kyuubi"):
             with self.subTest(name=name):
                 manifest = json.loads((ROOT / "mpacks" / name / "shared-files.json").read_text())
                 self.assertEqual(manifest["schema_version"], 1)
                 for item in manifest["files"]:
                     self.assertEqual(hashlib.sha256((ROOT / item["source"]).read_bytes()).hexdigest(), item["digest"])
-        for name in ("airflow", "celeborn", "kyuubi", "nginx", "postgresql", "generic-base"):
+        for name in ("nginx", "postgresql", "generic-base"):
             self.assertEqual(json.loads((ROOT / "release.json").read_text())["packs"][name]["version"],
-                             {"airflow": "1.0.0.4", "celeborn": "1.0.0.0", "kyuubi": "1.0.0.7",
-                              "nginx": "1.0.0.4", "postgresql": "1.0.0.5", "generic-base": "1.0.0.3"}[name])
+                             {"nginx": "1.0.0.4", "postgresql": "1.0.0.5", "generic-base": "1.0.0.3"}[name])
 
 
 if __name__ == "__main__":

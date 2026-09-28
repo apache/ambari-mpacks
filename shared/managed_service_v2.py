@@ -25,6 +25,7 @@ from managed_runtime import validate_result
 from managed_service import ManagedService
 from managed_topology import assigned_hosts
 from observations import observer_python
+from native_config import collect
 
 
 def observer_environment():
@@ -46,6 +47,7 @@ class ManagedServiceV2(ManagedService):
                                          config.get("clusterHostInfo", {}), self.topology_fields),
         }
         request["parameters"]["component"] = self.component
+        request["parameters"]["native_configs"] = collect(config["configurations"], self.service)
         request["parameters"]["hostname"] = config["agentLevelParams"]["hostname"]
         with tempfile.TemporaryDirectory(prefix="ambari-" + self.service + "-") as temporary:
             os.chmod(temporary, 0o700)
@@ -64,5 +66,6 @@ class ManagedServiceV2(ManagedService):
             if publish:
                 self.put_structured_out({"software_observation": observation})
             if process.returncode != 0 or observation["outcome"] != "APPLIED":
-                raise Fail("Service action is unresolved; inspect its structured error type")
+                raise Fail(observation.get("observations", {}).get("configuration_error") or
+                           "Service action is unresolved; inspect its structured error type")
             return observation

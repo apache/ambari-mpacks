@@ -3,7 +3,7 @@
   "schema_version": 1,
   "type": "full-release",
   "name": "doris",
-  "version": "1.0.0.5",
+  "version": "1.0.0.7",
   "description": "Apache Doris 4.1.4 single FE and BE",
   "artifacts": [{"name": "doris-definitions", "type": "extension-definitions", "source_dir": "extensions"}],
   "dependencies": []

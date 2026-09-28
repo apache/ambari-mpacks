@@ -24,6 +24,7 @@ from resource_management.core.resources.accounts import Group, User
 from resource_management.libraries.script.script import Script
 from observations import observer_python
 from managed_runtime import resolve_topology, validate_result
+from native_config import collect
 
 
 class ManagedService(Script):
@@ -41,6 +42,7 @@ class ManagedService(Script):
                                            config.get("clusterHostInfo", {})),
         }
         request["parameters"]["component"] = self.component
+        request["parameters"]["native_configs"] = collect(config["configurations"], self.service)
         request["parameters"]["hostname"] = config["agentLevelParams"]["hostname"]
         with tempfile.TemporaryDirectory(prefix="ambari-" + self.service + "-") as temporary:
             os.chmod(temporary, 0o700)
@@ -58,7 +60,8 @@ class ManagedService(Script):
             if publish:
                 self.put_structured_out({"software_observation": observation})
             if process.returncode != 0 or observation["outcome"] != "APPLIED":
-                raise Fail("Service action is unresolved; inspect its structured error type")
+                raise Fail(observation.get("observations", {}).get("configuration_error") or
+                           "Service action is unresolved; inspect its structured error type")
             return observation
 
     def install(self, env):
