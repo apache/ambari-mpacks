@@ -22,6 +22,8 @@ This independent repository contains management definitions and runtime installe
 Core delivery is tracked in the Ambari worktree's `docs/mpack` baseline; the
 [component expansion results](docs/component-expansion-results.md) record the
 Airflow and Celeborn basic acceptance scope.
+The [five-component implementation record](docs/five-component-implementation.md)
+tracks the newer DolphinScheduler, Trino, Doris, Elasticsearch and MinIO packs.
 The current acceptance target is Rocky Linux 8 on aarch64 with systemd.
 The existing Ubuntu definitions are retained but Ubuntu deployment and testing
 are excluded from this run. Nginx and PostgreSQL use operating-system packages
@@ -29,8 +31,10 @@ without Hadoop or stack-select. [Kyuubi](mpacks/kyuubi/README.md) extends the
 BIGTOP environment and uses its existing Spark, Hadoop and ZooKeeper services.
 Airflow uses an isolated Python environment and an external PostgreSQL 14-18
 database. Celeborn uses a pinned official binary with a single master topology.
-MinIO remains a [definition draft](mpacks/minio/README.md), without installation
-or an entry in deployment bundles, as explicitly requested.
+MinIO now uses a fixed source build after the subsequent request superseded its
+earlier non-installable draft. The five newer packs have completed basic Rocky
+deployment, restart and service-check acceptance; the implementation record
+lists exact versions, test evidence and the remaining topology/security limits.
 
 Install the version-pinned `ambari-mpack` tooling published by Ambari core.
 `release.json` selects the current package sources and exact management-definition
@@ -65,15 +69,20 @@ ambari-mpack --server "$AMBARI_SERVER_URL" services
 Individual packages retain their versions and can be updated independently.
 
 The full store includes generic-base, nginx, postgresql, kyuubi,
-[airflow](mpacks/airflow/README.md) and [celeborn](mpacks/celeborn/README.md).
+[airflow](mpacks/airflow/README.md), [celeborn](mpacks/celeborn/README.md),
+[DolphinScheduler](mpacks/dolphinscheduler/README.md),
+[Trino](mpacks/trino/README.md), [Doris](mpacks/doris/README.md),
+[Elasticsearch](mpacks/elasticsearch/README.md), and
+[MinIO](mpacks/minio/README.md).
 `release.json` is the authoritative version index. The `infrastructure` profile
 remains generic-base, nginx and postgresql. Earlier imported releases are retained
 for provenance. Mixed-platform
 imports do not bind every package to one stack: choose services for their
 compatible destination through the imported service catalog.
 Importing a newer store does not silently replace active definitions or upgrade
-host software. The bundle contains management definitions and scripts; configured
-software repositories supply the host packages.
+host software. The bundle contains management definitions and scripts. The
+individual package READMEs identify host prerequisites, pinned runtime downloads
+or source builds, disk requirements, and the current acceptance status.
 
 Package hooks which execute during online activation must declare
 `scope: "DEFINITIONS"` and honor the package's resource boundary. Hooks with an
@@ -86,6 +95,6 @@ and will not overwrite a source database. Automatic failover, multi-instance
 identity, and arbitrary frontend plugins are not provided.
 
 For further additions, see the [component expansion plan](docs/component-expansion-plan.md).
-Trino, an analytical database such as Doris or ClickHouse, SeaTunnel and Superset
-are the suggested next capabilities. Existing BIGTOP services should not acquire
+SeaTunnel, Superset and an Iceberg catalog service are possible next capabilities.
+Existing BIGTOP services should not acquire
 duplicate providers as a side effect of these additions.

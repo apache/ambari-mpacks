@@ -15,6 +15,12 @@ limitations under the License.
 
 # Component Expansion Proposal
 
+Update 2026-09-28: the later request superseded the deferred MinIO decision
+below. MinIO now has a source-built installable package in `release.json`;
+DolphinScheduler, Trino, Doris and Elasticsearch were also added. See
+`five-component-implementation.md` for their acceptance status. The original
+2026-09-26 decision and evidence remain below as historical context.
+
 Date: 2026-09-26. The user selected a basic first release rather than HA, and
 explicitly deferred MinIO installation. Airflow and Celeborn are now selected in
 `release.json`; MinIO remains an excluded definition draft. See the separate

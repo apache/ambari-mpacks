@@ -25,6 +25,26 @@
     "celeborn": {
       "path": "mpacks/celeborn",
       "version": "1.0.0.0"
+    },
+    "dolphinscheduler": {
+      "path": "mpacks/dolphinscheduler",
+      "version": "1.0.0.3"
+    },
+    "trino": {
+      "path": "mpacks/trino",
+      "version": "1.0.0.2"
+    },
+    "doris": {
+      "path": "mpacks/doris",
+      "version": "1.0.0.5"
+    },
+    "elasticsearch": {
+      "path": "mpacks/elasticsearch",
+      "version": "1.0.0.3"
+    },
+    "minio": {
+      "path": "mpacks/minio",
+      "version": "1.0.0.3"
     }
   }
 }
