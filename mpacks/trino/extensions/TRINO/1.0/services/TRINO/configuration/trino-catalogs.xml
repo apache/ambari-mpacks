@@ -16,7 +16,7 @@ limitations under the License.
 <configuration supports_adding_forbidden="true">
   <property>
     <name>content</name>
-    <display-name>trino-catalogs file contents</display-name>
+    <display-name>Catalog files (JSON)</display-name>
     <value>{
   "tpch": {
     "connector.name": "tpch"

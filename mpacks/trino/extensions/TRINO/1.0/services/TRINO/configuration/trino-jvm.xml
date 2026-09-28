@@ -16,7 +16,7 @@ limitations under the License.
 <configuration supports_adding_forbidden="true">
   <property>
     <name>content</name>
-    <display-name>trino-jvm file contents</display-name>
+    <display-name>jvm.config</display-name>
     <value>-server
 -XX:+UseG1GC
 -XX:+ExitOnOutOfMemoryError

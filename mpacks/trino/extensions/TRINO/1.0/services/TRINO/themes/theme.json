@@ -1,57 +1,47 @@
 {
   "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
   "name": "default",
-  "description": "Basic settings, native tuning and complete configuration files. Custom properties remain available in Advanced.",
+  "description": "Edit complete native configuration files; Basic Settings retains managed topology and credentials.",
   "configuration": {
     "layouts": [
       {
         "name": "default",
         "tabs": [
           {
-            "name": "basic",
-            "display-name": "Basic Settings",
+            "name": "files",
+            "display-name": "Configuration Files",
             "layout": {
               "tab-columns": 1,
-              "tab-rows": 1,
+              "tab-rows": 5,
               "sections": [
                 {
-                  "name": "trino-env",
-                  "display-name": "trino-env",
+                  "name": "trino-catalogs",
+                  "display-name": "trino-catalogs",
                   "row-index": 0,
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
-                      "name": "trino-env-fields",
+                      "name": "trino-catalogs-fields",
                       "row-index": 0,
                       "column-index": 0,
                       "row-span": 1,
                       "column-span": 1
                     }
                   ]
-                }
-              ]
-            }
-          },
-          {
-            "name": "tuning",
-            "display-name": "Native Settings",
-            "layout": {
-              "tab-columns": 1,
-              "tab-rows": 3,
-              "sections": [
+                },
                 {
                   "name": "trino-config",
                   "display-name": "trino-config",
-                  "row-index": 0,
+                  "row-index": 1,
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
                       "name": "trino-config-fields",
@@ -63,14 +53,33 @@
                   ]
                 },
                 {
-                  "name": "trino-log",
-                  "display-name": "trino-log",
-                  "row-index": 1,
+                  "name": "trino-jvm",
+                  "display-name": "trino-jvm",
+                  "row-index": 2,
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "trino-jvm-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "trino-log",
+                  "display-name": "trino-log",
+                  "row-index": 3,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
                       "name": "trino-log-fields",
@@ -84,12 +93,12 @@
                 {
                   "name": "trino-node",
                   "display-name": "trino-node",
-                  "row-index": 2,
+                  "row-index": 4,
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
                       "name": "trino-node-fields",
@@ -104,43 +113,24 @@
             }
           },
           {
-            "name": "files",
-            "display-name": "Configuration Files",
+            "name": "basic",
+            "display-name": "Basic Settings",
             "layout": {
               "tab-columns": 1,
-              "tab-rows": 2,
+              "tab-rows": 1,
               "sections": [
                 {
-                  "name": "trino-catalogs",
-                  "display-name": "trino-catalogs",
+                  "name": "trino-env",
+                  "display-name": "trino-env",
                   "row-index": 0,
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
-                      "name": "trino-catalogs-fields",
-                      "row-index": 0,
-                      "column-index": 0,
-                      "row-span": 1,
-                      "column-span": 1
-                    }
-                  ]
-                },
-                {
-                  "name": "trino-jvm",
-                  "display-name": "trino-jvm",
-                  "row-index": 1,
-                  "column-index": 0,
-                  "row-span": 1,
-                  "column-span": 1,
-                  "section-columns": 1,
-                  "section-rows": 1,
-                  "subsections": [
-                    {
-                      "name": "trino-jvm-fields",
+                      "name": "trino-env-fields",
                       "row-index": 0,
                       "column-index": 0,
                       "row-span": 1,
@@ -157,6 +147,26 @@
     "placement": {
       "configuration-layout": "default",
       "configs": [
+        {
+          "config": "trino-catalogs/content",
+          "subsection-name": "trino-catalogs-fields"
+        },
+        {
+          "config": "trino-config/content",
+          "subsection-name": "trino-config-fields"
+        },
+        {
+          "config": "trino-jvm/content",
+          "subsection-name": "trino-jvm-fields"
+        },
+        {
+          "config": "trino-log/content",
+          "subsection-name": "trino-log-fields"
+        },
+        {
+          "config": "trino-node/content",
+          "subsection-name": "trino-node-fields"
+        },
         {
           "config": "trino-env/coordinator_host",
           "subsection-name": "trino-env-fields"
@@ -184,58 +194,40 @@
         {
           "config": "trino-env/binary_url",
           "subsection-name": "trino-env-fields"
-        },
-        {
-          "config": "trino-config/query.max-memory",
-          "subsection-name": "trino-config-fields"
-        },
-        {
-          "config": "trino-config/query.max-memory-per-node",
-          "subsection-name": "trino-config-fields"
-        },
-        {
-          "config": "trino-config/query.max-history",
-          "subsection-name": "trino-config-fields"
-        },
-        {
-          "config": "trino-config/query.max-length",
-          "subsection-name": "trino-config-fields"
-        },
-        {
-          "config": "trino-config/query.max-stage-count",
-          "subsection-name": "trino-config-fields"
-        },
-        {
-          "config": "trino-config/query.max-run-time",
-          "subsection-name": "trino-config-fields"
-        },
-        {
-          "config": "trino-config/task.concurrency",
-          "subsection-name": "trino-config-fields"
-        },
-        {
-          "config": "trino-config/node-scheduler.include-coordinator",
-          "subsection-name": "trino-config-fields"
-        },
-        {
-          "config": "trino-log/io.trino",
-          "subsection-name": "trino-log-fields"
-        },
-        {
-          "config": "trino-node/node.internal-address-source",
-          "subsection-name": "trino-node-fields"
-        },
-        {
-          "config": "trino-catalogs/content",
-          "subsection-name": "trino-catalogs-fields"
-        },
-        {
-          "config": "trino-jvm/content",
-          "subsection-name": "trino-jvm-fields"
         }
       ]
     },
     "widgets": [
+      {
+        "config": "trino-catalogs/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "trino-config/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "trino-jvm/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "trino-log/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "trino-node/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
       {
         "config": "trino-env/coordinator_host",
         "widget": {
@@ -276,78 +268,6 @@
         "config": "trino-env/binary_url",
         "widget": {
           "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-config/query.max-memory",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-config/query.max-memory-per-node",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-config/query.max-history",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-config/query.max-length",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-config/query.max-stage-count",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-config/query.max-run-time",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-config/task.concurrency",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-config/node-scheduler.include-coordinator",
-        "widget": {
-          "type": "toggle"
-        }
-      },
-      {
-        "config": "trino-log/io.trino",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-node/node.internal-address-source",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "trino-catalogs/content",
-        "widget": {
-          "type": "text-area"
-        }
-      },
-      {
-        "config": "trino-jvm/content",
-        "widget": {
-          "type": "text-area"
         }
       }
     ]

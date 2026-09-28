@@ -13,69 +13,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
+<configuration supports_adding_forbidden="true">
   <property>
-    <name>query.max-memory</name>
-    <display-name>query.max-memory</display-name>
-    <value>512MB</value>
-    <description>Maximum distributed user memory per query. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>query.max-memory-per-node</name>
-    <display-name>query.max-memory-per-node</display-name>
-    <value>256MB</value>
-    <description>Maximum user memory per query per node. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>query.max-history</name>
-    <display-name>query.max-history</display-name>
-    <value>100</value>
-    <description>Completed queries retained in memory. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>query.max-length</name>
-    <display-name>query.max-length</display-name>
-    <value>1000000</value>
-    <description>Maximum query text length in characters. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>query.max-stage-count</name>
-    <display-name>query.max-stage-count</display-name>
-    <value>150</value>
-    <description>Maximum stages per query. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>query.max-run-time</name>
-    <display-name>query.max-run-time</display-name>
-    <value>100d</value>
-    <description>Maximum elapsed query time, including queueing. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>task.concurrency</name>
-    <display-name>task.concurrency</display-name>
-    <value>4</value>
-    <description>Local parallelism per task; must be a power of two. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>node-scheduler.include-coordinator</name>
-    <display-name>node-scheduler.include-coordinator</display-name>
-    <value>true</value>
-    <description>Allow the coordinator to execute tasks. Applies to the coordinator only. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>boolean</type></value-attributes>
+    <name>content</name>
+    <display-name>config.properties</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+query.max-memory=512MB
+query.max-memory-per-node=256MB
+query.max-history=100
+query.max-length=1000000
+query.max-stage-count=150
+query.max-run-time=100d
+task.concurrency=4
+node-scheduler.include-coordinator=true
+</value>
+    <description>Complete properties configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>config.properties</property-file-name><property-file-type>properties</property-file-type></value-attributes>
     <on-ambari-upgrade add="true"/>
   </property>
 </configuration>

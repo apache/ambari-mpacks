@@ -82,6 +82,9 @@ def configure(parameters):
         reserved=("http-server.authentication.", "http-server.https.", "internal-communication."))
     if role == "worker":
         options.pop("node-scheduler.include-coordinator", None)
+        if hasattr(options, "source"):
+            from content_formats import without_properties
+            options.source = without_properties(options.source, {"node-scheduler.include-coordinator"})
     jvm = ["-Xmx" + heap] + jvm_options(parameters, "trino-jvm",
         "-server\n-XX:+UseG1GC\n-XX:+ExitOnOutOfMemoryError\n--add-modules=jdk.incubator.vector\n")
     catalog_files = catalogs(parameters)
