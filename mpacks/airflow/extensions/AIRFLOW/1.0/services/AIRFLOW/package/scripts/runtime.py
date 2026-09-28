@@ -136,6 +136,7 @@ def install(request):
 
 
 def configure(parameters):
+    from native_config import content, section, validate_properties
     host, port = settings(parameters)
     for path in (CONF, DATA, DATA / "dags", LOGS):
         directory(path, "airflow")
@@ -165,12 +166,25 @@ def configure(parameters):
         "fab": {"config_file": str(CONF / "webserver_config.py")},
         "scheduler": {"enable_health_check": "True"},
     })
+    overrides = section(parameters, "airflow-settings")
+    validate_properties(overrides, "airflow-settings")
+    managed = {"core.executor", "core.fernet_key", "core.parallelism", "core.auth_manager",
+               "core.execution_api_server_url", "database.sql_alchemy_conn", "api.host", "api.port",
+               "api.secret_key", "api_auth.jwt_secret", "fab.config_file"}
+    for key, value in overrides.items():
+        group, dot, option = key.partition(".")
+        if not dot or key != key.lower() or group == "default" or key in managed or option.endswith(("_cmd", "_secret")):
+            raise ValueError("Use section.option for Airflow settings; managed identity cannot be overridden")
+        if not config.has_section(group):
+            config.add_section(group)
+        config.set(group, option, value)
     import io
     text = io.StringIO()
     config.write(text)
     owned_file(CONF / "airflow.cfg", text.getvalue(), "airflow", 0o600)
     owned_file(CONF / "webserver_config.py",
-               "from flask_appbuilder.security.manager import AUTH_DB\nAUTH_TYPE = AUTH_DB\n", "airflow")
+               content(parameters, "airflow-webserver",
+                       "from flask_appbuilder.security.manager import AUTH_DB\nAUTH_TYPE = AUTH_DB\n"), "airflow")
     dag = DATA / "dags/ambari_mpack_health.py"
     content = Path(__file__).with_name("health_dag.py").read_text()
     if dag.exists() and dag.read_text() != content:

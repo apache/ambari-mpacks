@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configuration>
+  <property>
+    <name>core.load_examples</name>
+    <display-name>core.load_examples</display-name>
+    <value>False</value>
+    <description>Load example DAGs. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>core.max_active_tasks_per_dag</name>
+    <display-name>core.max_active_tasks_per_dag</display-name>
+    <value>16</value>
+    <description>Maximum concurrent tasks per DAG. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>core.max_active_runs_per_dag</name>
+    <display-name>core.max_active_runs_per_dag</display-name>
+    <value>16</value>
+    <description>Maximum active DAG runs per DAG. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>core.default_timezone</name>
+    <display-name>core.default_timezone</display-name>
+    <value>utc</value>
+    <description>Default timezone for DAG scheduling. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>scheduler.max_tis_per_query</name>
+    <display-name>scheduler.max_tis_per_query</display-name>
+    <value>16</value>
+    <description>Task instances examined in a scheduling query. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>scheduler.scheduler_heartbeat_sec</name>
+    <display-name>scheduler.scheduler_heartbeat_sec</display-name>
+    <value>5</value>
+    <description>Scheduler heartbeat interval. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>logging.logging_level</name>
+    <display-name>logging.logging_level</display-name>
+    <value>INFO</value>
+    <description>Airflow log level. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>logging.colored_console_log</name>
+    <display-name>logging.colored_console_log</display-name>
+    <value>False</value>
+    <description>Enable colored console logging. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>api.workers</name>
+    <display-name>api.workers</display-name>
+    <value>1</value>
+    <description>API worker processes. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>dag_processor.refresh_interval</name>
+    <display-name>dag_processor.refresh_interval</display-name>
+    <value>300</value>
+    <description>DAG source refresh interval in seconds. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+</configuration>
