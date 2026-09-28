@@ -149,7 +149,11 @@ def configure(parameters):
     # Remove replaced keys, preserving upstream comments and version-specific JVM defaults.
     lines = "\n".join(line for line in config.read_text().splitlines()
                       if line.split("=", 1)[0].strip() not in values)
-    lines += "\n" + "".join(key + " = " + str(value) + "\n" for key, value in values.items())
+    if hasattr(values, "source"):
+        lines += "\n" + values.source.rstrip() + "\n"
+        lines += "".join(key + " = " + str(value) + "\n" for key, value in values.items() if key not in values.explicit)
+    else:
+        lines += "\n" + "".join(key + " = " + str(value) + "\n" for key, value in values.items())
     owned_file(stage / "conf" / (role + ".conf"), lines, "doris")
     unit("ambari-doris-" + role + ".service", "doris", Path("/bin/bash"),
          {"JAVA_HOME": str(java)}, stage, str(script))

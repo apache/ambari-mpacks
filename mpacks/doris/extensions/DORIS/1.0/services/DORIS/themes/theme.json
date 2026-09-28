@@ -1,44 +1,15 @@
 {
   "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
   "name": "default",
-  "description": "Basic settings, native tuning and complete configuration files. Custom properties remain available in Advanced.",
+  "description": "Edit complete native configuration files; Basic Settings retains managed topology and credentials.",
   "configuration": {
     "layouts": [
       {
         "name": "default",
         "tabs": [
           {
-            "name": "basic",
-            "display-name": "Basic Settings",
-            "layout": {
-              "tab-columns": 1,
-              "tab-rows": 1,
-              "sections": [
-                {
-                  "name": "doris-env",
-                  "display-name": "doris-env",
-                  "row-index": 0,
-                  "column-index": 0,
-                  "row-span": 1,
-                  "column-span": 1,
-                  "section-columns": 1,
-                  "section-rows": 1,
-                  "subsections": [
-                    {
-                      "name": "doris-env-fields",
-                      "row-index": 0,
-                      "column-index": 0,
-                      "row-span": 1,
-                      "column-span": 1
-                    }
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "name": "tuning",
-            "display-name": "Native Settings",
+            "name": "files",
+            "display-name": "Configuration Files",
             "layout": {
               "tab-columns": 1,
               "tab-rows": 2,
@@ -50,8 +21,8 @@
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
                       "name": "doris-be-fields",
@@ -69,11 +40,40 @@
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
                       "name": "doris-fe-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "basic",
+            "display-name": "Basic Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "doris-env",
+                  "display-name": "doris-env",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "doris-env-fields",
                       "row-index": 0,
                       "column-index": 0,
                       "row-span": 1,
@@ -90,6 +90,14 @@
     "placement": {
       "configuration-layout": "default",
       "configs": [
+        {
+          "config": "doris-be/content",
+          "subsection-name": "doris-be-fields"
+        },
+        {
+          "config": "doris-fe/content",
+          "subsection-name": "doris-fe-fields"
+        },
         {
           "config": "doris-env/fe_host",
           "subsection-name": "doris-env-fields"
@@ -149,62 +157,22 @@
         {
           "config": "doris-env/binary_url",
           "subsection-name": "doris-env-fields"
-        },
-        {
-          "config": "doris-be/sys_log_level",
-          "subsection-name": "doris-be-fields"
-        },
-        {
-          "config": "doris-be/sys_log_roll_num",
-          "subsection-name": "doris-be-fields"
-        },
-        {
-          "config": "doris-be/max_base_compaction_threads",
-          "subsection-name": "doris-be-fields"
-        },
-        {
-          "config": "doris-be/storage_flood_stage_usage_percent",
-          "subsection-name": "doris-be-fields"
-        },
-        {
-          "config": "doris-be/storage_flood_stage_left_capacity_bytes",
-          "subsection-name": "doris-be-fields"
-        },
-        {
-          "config": "doris-fe/sys_log_level",
-          "subsection-name": "doris-fe-fields"
-        },
-        {
-          "config": "doris-fe/sys_log_mode",
-          "subsection-name": "doris-fe-fields"
-        },
-        {
-          "config": "doris-fe/sys_log_roll_num",
-          "subsection-name": "doris-fe-fields"
-        },
-        {
-          "config": "doris-fe/audit_log_roll_num",
-          "subsection-name": "doris-fe-fields"
-        },
-        {
-          "config": "doris-fe/qe_max_connection",
-          "subsection-name": "doris-fe-fields"
-        },
-        {
-          "config": "doris-fe/qe_query_timeout_second",
-          "subsection-name": "doris-fe-fields"
-        },
-        {
-          "config": "doris-fe/qe_slow_log_ms",
-          "subsection-name": "doris-fe-fields"
-        },
-        {
-          "config": "doris-fe/arrow_flight_sql_port",
-          "subsection-name": "doris-fe-fields"
         }
       ]
     },
     "widgets": [
+      {
+        "config": "doris-be/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "doris-fe/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
       {
         "config": "doris-env/fe_host",
         "widget": {
@@ -291,84 +259,6 @@
       },
       {
         "config": "doris-env/binary_url",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-be/sys_log_level",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-be/sys_log_roll_num",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-be/max_base_compaction_threads",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-be/storage_flood_stage_usage_percent",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-be/storage_flood_stage_left_capacity_bytes",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-fe/sys_log_level",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-fe/sys_log_mode",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-fe/sys_log_roll_num",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-fe/audit_log_roll_num",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-fe/qe_max_connection",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-fe/qe_query_timeout_second",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-fe/qe_slow_log_ms",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "doris-fe/arrow_flight_sql_port",
         "widget": {
           "type": "text-field"
         }
