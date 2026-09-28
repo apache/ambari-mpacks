@@ -13,53 +13,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
+<configuration supports_adding_forbidden="true">
   <property>
-    <name>celeborn.storage.availableTypes</name>
-    <display-name>celeborn.storage.availableTypes</display-name>
-    <value>HDD</value>
-    <description>Available storage types for this non-HA deployment. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>celeborn.metrics.enabled</name>
-    <display-name>celeborn.metrics.enabled</display-name>
-    <value>true</value>
-    <description>Enable service metrics. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>boolean</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>celeborn.worker.flusher.threads</name>
-    <display-name>celeborn.worker.flusher.threads</display-name>
-    <value>2</value>
-    <description>Disk flusher threads. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>celeborn.worker.commitFiles.threads</name>
-    <display-name>celeborn.worker.commitFiles.threads</display-name>
-    <value>4</value>
-    <description>Worker file commit threads. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>celeborn.worker.sortPartition.threads</name>
-    <display-name>celeborn.worker.sortPartition.threads</display-name>
-    <value>2</value>
-    <description>Worker sorter threads. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>celeborn.worker.monitor.disk.enabled</name>
-    <display-name>celeborn.worker.monitor.disk.enabled</display-name>
-    <value>true</value>
-    <description>Enable worker disk monitoring. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>boolean</type></value-attributes>
+    <name>content</name>
+    <display-name>celeborn-defaults.conf</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+celeborn.storage.availableTypes=HDD
+celeborn.metrics.enabled=true
+celeborn.worker.flusher.threads=2
+celeborn.worker.commitFiles.threads=4
+celeborn.worker.sortPartition.threads=2
+celeborn.worker.monitor.disk.enabled=true
+</value>
+    <description>Complete properties configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>celeborn-defaults.conf</property-file-name><property-file-type>properties</property-file-type></value-attributes>
     <on-ambari-upgrade add="true"/>
   </property>
 </configuration>

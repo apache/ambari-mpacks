@@ -13,21 +13,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
+<configuration supports_adding_forbidden="true">
   <property>
-    <name>CELEBORN_MASTER_JAVA_OPTS</name>
-    <display-name>CELEBORN_MASTER_JAVA_OPTS</display-name>
-    <value>-XX:+ExitOnOutOfMemoryError</value>
-    <description>Additional master JVM options. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>CELEBORN_WORKER_JAVA_OPTS</name>
-    <display-name>CELEBORN_WORKER_JAVA_OPTS</display-name>
-    <value>-XX:+ExitOnOutOfMemoryError</value>
-    <description>Additional worker JVM options. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
+    <name>content</name>
+    <display-name>celeborn-env.sh</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+CELEBORN_MASTER_JAVA_OPTS='-XX:+ExitOnOutOfMemoryError'
+CELEBORN_WORKER_JAVA_OPTS='-XX:+ExitOnOutOfMemoryError'
+</value>
+    <description>Complete environment configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>celeborn-env.sh</property-file-name><property-file-type>environment</property-file-type></value-attributes>
     <on-ambari-upgrade add="true"/>
   </property>
 </configuration>

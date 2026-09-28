@@ -1,47 +1,18 @@
 {
   "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
   "name": "default",
-  "description": "Basic settings, native tuning and complete configuration files. Custom properties remain available in Advanced.",
+  "description": "Edit complete native configuration files; Basic Settings retains managed topology and credentials.",
   "configuration": {
     "layouts": [
       {
         "name": "default",
         "tabs": [
           {
-            "name": "basic",
-            "display-name": "Basic Settings",
+            "name": "files",
+            "display-name": "Configuration Files",
             "layout": {
               "tab-columns": 1,
-              "tab-rows": 1,
-              "sections": [
-                {
-                  "name": "celeborn-env",
-                  "display-name": "celeborn-env",
-                  "row-index": 0,
-                  "column-index": 0,
-                  "row-span": 1,
-                  "column-span": 1,
-                  "section-columns": 1,
-                  "section-rows": 1,
-                  "subsections": [
-                    {
-                      "name": "celeborn-env-fields",
-                      "row-index": 0,
-                      "column-index": 0,
-                      "row-span": 1,
-                      "column-span": 1
-                    }
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "name": "tuning",
-            "display-name": "Native Settings",
-            "layout": {
-              "tab-columns": 1,
-              "tab-rows": 2,
+              "tab-rows": 3,
               "sections": [
                 {
                   "name": "celeborn-defaults",
@@ -50,8 +21,8 @@
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
                       "name": "celeborn-defaults-fields",
@@ -69,11 +40,30 @@
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
                       "name": "celeborn-environment-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "celeborn-log4j2",
+                  "display-name": "celeborn-log4j2",
+                  "row-index": 2,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "celeborn-log4j2-fields",
                       "row-index": 0,
                       "column-index": 0,
                       "row-span": 1,
@@ -85,24 +75,24 @@
             }
           },
           {
-            "name": "files",
-            "display-name": "Configuration Files",
+            "name": "basic",
+            "display-name": "Basic Settings",
             "layout": {
               "tab-columns": 1,
               "tab-rows": 1,
               "sections": [
                 {
-                  "name": "celeborn-log4j2",
-                  "display-name": "celeborn-log4j2",
+                  "name": "celeborn-env",
+                  "display-name": "celeborn-env",
                   "row-index": 0,
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
-                      "name": "celeborn-log4j2-fields",
+                      "name": "celeborn-env-fields",
                       "row-index": 0,
                       "column-index": 0,
                       "row-span": 1,
@@ -119,6 +109,18 @@
     "placement": {
       "configuration-layout": "default",
       "configs": [
+        {
+          "config": "celeborn-defaults/content",
+          "subsection-name": "celeborn-defaults-fields"
+        },
+        {
+          "config": "celeborn-environment/content",
+          "subsection-name": "celeborn-environment-fields"
+        },
+        {
+          "config": "celeborn-log4j2/content",
+          "subsection-name": "celeborn-log4j2-fields"
+        },
         {
           "config": "celeborn-env/master_host",
           "subsection-name": "celeborn-env-fields"
@@ -178,46 +180,28 @@
         {
           "config": "celeborn-env/binary_url",
           "subsection-name": "celeborn-env-fields"
-        },
-        {
-          "config": "celeborn-defaults/celeborn.storage.availableTypes",
-          "subsection-name": "celeborn-defaults-fields"
-        },
-        {
-          "config": "celeborn-defaults/celeborn.metrics.enabled",
-          "subsection-name": "celeborn-defaults-fields"
-        },
-        {
-          "config": "celeborn-defaults/celeborn.worker.flusher.threads",
-          "subsection-name": "celeborn-defaults-fields"
-        },
-        {
-          "config": "celeborn-defaults/celeborn.worker.commitFiles.threads",
-          "subsection-name": "celeborn-defaults-fields"
-        },
-        {
-          "config": "celeborn-defaults/celeborn.worker.sortPartition.threads",
-          "subsection-name": "celeborn-defaults-fields"
-        },
-        {
-          "config": "celeborn-defaults/celeborn.worker.monitor.disk.enabled",
-          "subsection-name": "celeborn-defaults-fields"
-        },
-        {
-          "config": "celeborn-environment/CELEBORN_MASTER_JAVA_OPTS",
-          "subsection-name": "celeborn-environment-fields"
-        },
-        {
-          "config": "celeborn-environment/CELEBORN_WORKER_JAVA_OPTS",
-          "subsection-name": "celeborn-environment-fields"
-        },
-        {
-          "config": "celeborn-log4j2/content",
-          "subsection-name": "celeborn-log4j2-fields"
         }
       ]
     },
     "widgets": [
+      {
+        "config": "celeborn-defaults/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "celeborn-environment/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "celeborn-log4j2/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
       {
         "config": "celeborn-env/master_host",
         "widget": {
@@ -306,60 +290,6 @@
         "config": "celeborn-env/binary_url",
         "widget": {
           "type": "text-field"
-        }
-      },
-      {
-        "config": "celeborn-defaults/celeborn.storage.availableTypes",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "celeborn-defaults/celeborn.metrics.enabled",
-        "widget": {
-          "type": "toggle"
-        }
-      },
-      {
-        "config": "celeborn-defaults/celeborn.worker.flusher.threads",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "celeborn-defaults/celeborn.worker.commitFiles.threads",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "celeborn-defaults/celeborn.worker.sortPartition.threads",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "celeborn-defaults/celeborn.worker.monitor.disk.enabled",
-        "widget": {
-          "type": "toggle"
-        }
-      },
-      {
-        "config": "celeborn-environment/CELEBORN_MASTER_JAVA_OPTS",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "celeborn-environment/CELEBORN_WORKER_JAVA_OPTS",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "celeborn-log4j2/content",
-        "widget": {
-          "type": "text-area"
         }
       }
     ]
