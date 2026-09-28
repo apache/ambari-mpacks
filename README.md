@@ -18,9 +18,9 @@ limitations under the License.
 
 # Ambari Third-Party Management Packs
 
-The [native configuration guide](docs/native-configuration.md) describes the
-Basic Settings, Native Settings, Configuration Files and custom-property
-editors for the eight expanded service packs.
+The [configuration file guide](docs/content-configuration.md) describes the
+complete content editors for all ten service packs, including PostgreSQL and
+Nginx, and the migration of existing scalar configuration values.
 
 This independent repository contains management definitions and runtime installers.
 Core delivery is tracked in the Ambari worktree's `docs/mpack` baseline; the

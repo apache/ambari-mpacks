@@ -15,6 +15,9 @@ limitations under the License.
 
 # Native Configuration Management
 
+This guide records the earlier scalar configuration interface. The current
+interface prefers complete file content; see [Configuration File Editors](content-configuration.md).
+
 The Kyuubi, Airflow, Celeborn, DolphinScheduler, Trino, Doris, Elasticsearch and
 MinIO packs expose native configuration through Ambari. Basic settings remain
 compatible with earlier releases. Service-owned configuration types travel

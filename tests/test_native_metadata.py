@@ -28,7 +28,7 @@ def parameters(types):
 
 class NativeMetadataTests(unittest.TestCase):
     def test_metadata_declares_every_type_and_theme_property(self):
-        for name in ("kyuubi", "trino", "doris", "elasticsearch", "minio", "airflow", "celeborn", "dolphinscheduler"):
+        for name in ("nginx", "postgresql", "kyuubi", "trino", "doris", "elasticsearch", "minio", "airflow", "celeborn", "dolphinscheduler"):
             base = ROOT / "mpacks" / name / "extensions" / name.upper() / "1.0/services" / name.upper()
             types = {p.stem: ElementTree.parse(p).getroot() for p in (base / "configuration").glob("*.xml")}
             metadata = ElementTree.parse(base / "metainfo.xml")
