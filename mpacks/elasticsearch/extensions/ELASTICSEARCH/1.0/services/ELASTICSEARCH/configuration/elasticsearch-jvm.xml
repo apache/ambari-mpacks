@@ -16,7 +16,7 @@ limitations under the License.
 <configuration supports_adding_forbidden="true">
   <property>
     <name>content</name>
-    <display-name>elasticsearch-jvm file contents</display-name>
+    <display-name>jvm.options.d/99-ambari.options</display-name>
     <value># Additional JVM options, one per line.
 </value>
     <description>Additional JVM options. Set heap_size in basic settings; vendor jvm.options is preserved.</description>

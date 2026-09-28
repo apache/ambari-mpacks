@@ -21,6 +21,11 @@ class Node(ManagedServiceV2):
     component = "node"
     topology_fields = {"node_host": ("elasticsearch_node_hosts", True, False)}
 
+    def configure(self, env):
+        from resource_management.core.resources.packaging import Package
+        Package("python3-pyyaml")
+        super(Node, self).configure(env)
+
 
 if __name__ == "__main__":
     Node().execute()

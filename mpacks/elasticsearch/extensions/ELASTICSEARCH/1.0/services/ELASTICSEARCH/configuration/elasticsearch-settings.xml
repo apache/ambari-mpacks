@@ -13,45 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
+<configuration supports_adding_forbidden="true">
   <property>
-    <name>action.destructive_requires_name</name>
-    <display-name>action.destructive_requires_name</display-name>
-    <value>true</value>
-    <description>Require explicit index names for destructive actions. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>boolean</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>http.max_content_length</name>
-    <display-name>http.max_content_length</display-name>
-    <value>100mb</value>
-    <description>Maximum HTTP request body. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>indices.memory.index_buffer_size</name>
-    <display-name>indices.memory.index_buffer_size</display-name>
-    <value>10%</value>
-    <description>Heap fraction used for indexing buffers. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>search.max_buckets</name>
-    <display-name>search.max_buckets</display-name>
-    <value>65536</value>
-    <description>Maximum aggregation buckets per response. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>cluster.max_shards_per_node</name>
-    <display-name>cluster.max_shards_per_node</display-name>
-    <value>1000</value>
-    <description>Maximum open shards per data node. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <name>content</name>
+    <display-name>elasticsearch.yml</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+"action.destructive_requires_name": "true"
+"http.max_content_length": "100mb"
+"indices.memory.index_buffer_size": "10%"
+"search.max_buckets": "65536"
+"cluster.max_shards_per_node": "1000"
+</value>
+    <description>Complete yaml configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>elasticsearch.yml</property-file-name><property-file-type>yaml</property-file-type></value-attributes>
     <on-ambari-upgrade add="true"/>
   </property>
 </configuration>
