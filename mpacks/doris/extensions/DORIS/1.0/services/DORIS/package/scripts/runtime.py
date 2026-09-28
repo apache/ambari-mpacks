@@ -93,6 +93,7 @@ def _linked(destination, source):
 
 
 def configure(parameters):
+    from native_config import properties
     role, fe, be, host, ports, java, heap, be_memory, password = settings(parameters)
     if role == "check":
         raise ValueError("A service check cannot configure Doris")
@@ -144,7 +145,11 @@ def configure(parameters):
                   "be_port": ports["be_port"], "webserver_port": ports["be_http_port"],
                   "heartbeat_service_port": ports["be_heartbeat_port"], "brpc_port": ports["be_brpc_port"]}
     config = source / "conf" / (role + ".conf")
-    lines = config.read_text() + "\n" + "".join(key + " = " + str(value) + "\n" for key, value in values.items())
+    values = properties(parameters, "doris-" + role, values)
+    # Remove replaced keys, preserving upstream comments and version-specific JVM defaults.
+    lines = "\n".join(line for line in config.read_text().splitlines()
+                      if line.split("=", 1)[0].strip() not in values)
+    lines += "\n" + "".join(key + " = " + str(value) + "\n" for key, value in values.items())
     owned_file(stage / "conf" / (role + ".conf"), lines, "doris")
     unit("ambari-doris-" + role + ".service", "doris", Path("/bin/bash"),
          {"JAVA_HOME": str(java)}, stage, str(script))
