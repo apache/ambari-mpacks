@@ -16,7 +16,7 @@ limitations under the License.
 <configuration supports_adding_forbidden="true">
   <property>
     <name>content</name>
-    <display-name>airflow-webserver file contents</display-name>
+    <display-name>webserver_config.py</display-name>
     <value>from flask_appbuilder.security.manager import AUTH_DB
 AUTH_TYPE = AUTH_DB
 </value>

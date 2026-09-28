@@ -167,6 +167,9 @@ def configure(parameters):
         "scheduler": {"enable_health_check": "True"},
     })
     overrides = section(parameters, "airflow-settings")
+    from content_formats import Document, parse_ini, render_ini
+    if "content" in overrides:
+        overrides = parse_ini(overrides["content"])
     validate_properties(overrides, "airflow-settings")
     managed = {"core.executor", "core.fernet_key", "core.parallelism", "core.auth_manager",
                "core.execution_api_server_url", "database.sql_alchemy_conn", "api.host", "api.port",
@@ -181,7 +184,9 @@ def configure(parameters):
     import io
     text = io.StringIO()
     config.write(text)
-    owned_file(CONF / "airflow.cfg", text.getvalue(), "airflow", 0o600)
+    output = render_ini(overrides, {group + "." + key: value for group in config.sections()
+                                   for key, value in config.items(group)}) if isinstance(overrides, Document) else text.getvalue()
+    owned_file(CONF / "airflow.cfg", output, "airflow", 0o600)
     owned_file(CONF / "webserver_config.py",
                content(parameters, "airflow-webserver",
                        "from flask_appbuilder.security.manager import AUTH_DB\nAUTH_TYPE = AUTH_DB\n"), "airflow")

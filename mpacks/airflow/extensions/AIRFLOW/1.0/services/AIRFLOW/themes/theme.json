@@ -1,12 +1,60 @@
 {
   "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
   "name": "default",
-  "description": "Basic settings, native tuning and complete configuration files. Custom properties remain available in Advanced.",
+  "description": "Edit complete native configuration files; Basic Settings retains managed topology and credentials.",
   "configuration": {
     "layouts": [
       {
         "name": "default",
         "tabs": [
+          {
+            "name": "files",
+            "display-name": "Configuration Files",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 2,
+              "sections": [
+                {
+                  "name": "airflow-settings",
+                  "display-name": "airflow-settings",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "airflow-settings-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "airflow-webserver",
+                  "display-name": "airflow-webserver",
+                  "row-index": 1,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "airflow-webserver-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
           {
             "name": "basic",
             "display-name": "Basic Settings",
@@ -21,69 +69,11 @@
                   "column-index": 0,
                   "row-span": 1,
                   "column-span": 1,
-                  "section-columns": 1,
                   "section-rows": 1,
+                  "section-columns": 1,
                   "subsections": [
                     {
                       "name": "airflow-env-fields",
-                      "row-index": 0,
-                      "column-index": 0,
-                      "row-span": 1,
-                      "column-span": 1
-                    }
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "name": "tuning",
-            "display-name": "Native Settings",
-            "layout": {
-              "tab-columns": 1,
-              "tab-rows": 1,
-              "sections": [
-                {
-                  "name": "airflow-settings",
-                  "display-name": "airflow-settings",
-                  "row-index": 0,
-                  "column-index": 0,
-                  "row-span": 1,
-                  "column-span": 1,
-                  "section-columns": 1,
-                  "section-rows": 1,
-                  "subsections": [
-                    {
-                      "name": "airflow-settings-fields",
-                      "row-index": 0,
-                      "column-index": 0,
-                      "row-span": 1,
-                      "column-span": 1
-                    }
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "name": "files",
-            "display-name": "Configuration Files",
-            "layout": {
-              "tab-columns": 1,
-              "tab-rows": 1,
-              "sections": [
-                {
-                  "name": "airflow-webserver",
-                  "display-name": "airflow-webserver",
-                  "row-index": 0,
-                  "column-index": 0,
-                  "row-span": 1,
-                  "column-span": 1,
-                  "section-columns": 1,
-                  "section-rows": 1,
-                  "subsections": [
-                    {
-                      "name": "airflow-webserver-fields",
                       "row-index": 0,
                       "column-index": 0,
                       "row-span": 1,
@@ -100,6 +90,14 @@
     "placement": {
       "configuration-layout": "default",
       "configs": [
+        {
+          "config": "airflow-settings/content",
+          "subsection-name": "airflow-settings-fields"
+        },
+        {
+          "config": "airflow-webserver/content",
+          "subsection-name": "airflow-webserver-fields"
+        },
         {
           "config": "airflow-env/server_host",
           "subsection-name": "airflow-env-fields"
@@ -143,54 +141,22 @@
         {
           "config": "airflow-env/parallelism",
           "subsection-name": "airflow-env-fields"
-        },
-        {
-          "config": "airflow-settings/core.load_examples",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-settings/core.max_active_tasks_per_dag",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-settings/core.max_active_runs_per_dag",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-settings/core.default_timezone",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-settings/scheduler.max_tis_per_query",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-settings/scheduler.scheduler_heartbeat_sec",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-settings/logging.logging_level",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-settings/logging.colored_console_log",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-settings/api.workers",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-settings/dag_processor.refresh_interval",
-          "subsection-name": "airflow-settings-fields"
-        },
-        {
-          "config": "airflow-webserver/content",
-          "subsection-name": "airflow-webserver-fields"
         }
       ]
     },
     "widgets": [
+      {
+        "config": "airflow-settings/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "airflow-webserver/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
       {
         "config": "airflow-env/server_host",
         "widget": {
@@ -255,72 +221,6 @@
         "config": "airflow-env/parallelism",
         "widget": {
           "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/core.load_examples",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/core.max_active_tasks_per_dag",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/core.max_active_runs_per_dag",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/core.default_timezone",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/scheduler.max_tis_per_query",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/scheduler.scheduler_heartbeat_sec",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/logging.logging_level",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/logging.colored_console_log",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/api.workers",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-settings/dag_processor.refresh_interval",
-        "widget": {
-          "type": "text-field"
-        }
-      },
-      {
-        "config": "airflow-webserver/content",
-        "widget": {
-          "type": "text-area"
         }
       }
     ]
