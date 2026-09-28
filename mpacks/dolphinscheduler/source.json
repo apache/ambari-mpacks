@@ -1,0 +1,13 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "schema_version": 1,
+  "software_version": "3.1.9",
+  "source_tag": "3.1.9",
+  "source_commit": "400ed9147a3fd89c361e1c2bd53c94cb1e5c9b65",
+  "binary": {
+    "url": "https://archive.apache.org/dist/dolphinscheduler/3.1.9/apache-dolphinscheduler-3.1.9-bin.tar.gz",
+    "sha512": "b09e7a11245dc9db8be8c0600857f077c4287380a676577bf3157e98ef2940ab5164d954e30596503dd0a52ab5866d5a7cd4edc88b2f04bdc3407ca441fbd764"
+  },
+  "topology": "SINGLE_HOST_EXTERNAL_POSTGRESQL_ZOOKEEPER",
+  "validation_status": "IMPLEMENTED_PENDING_ACCEPTANCE"
+}
