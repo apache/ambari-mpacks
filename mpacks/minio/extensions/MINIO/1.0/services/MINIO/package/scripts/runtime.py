@@ -138,6 +138,7 @@ def build(parameters):
 
 
 def configure(parameters):
+    from native_config import environment
     role, host, api, console, storage, go_home, user, password = settings(parameters)
     if role != "server":
         raise ValueError("A service check cannot configure MinIO")
@@ -146,6 +147,13 @@ def configure(parameters):
         directory(path, "minio")
     runtime = {"binary": str(HOME / "bin/minio"), "data": str(storage), "api_port": api,
                "console_port": console, "root_user": user, "root_password": password}
+    extra = environment(parameters, "minio-environment")
+    if any(not key.startswith("MINIO_") or key in {
+            "MINIO_ROOT_USER", "MINIO_ROOT_PASSWORD", "MINIO_ROOT_USER_FILE", "MINIO_ROOT_PASSWORD_FILE",
+            "MINIO_ADDRESS", "MINIO_CONSOLE_ADDRESS", "MINIO_VOLUMES", "MINIO_CONFIG_ENV_FILE",
+            "MINIO_OPTS"} or key.endswith("_FILE") for key in extra):
+        raise ValueError("MinIO identity, listeners and secret files belong to basic settings")
+    runtime["environment"] = extra
     owned_file(CONF / "runtime.json", json.dumps(runtime, sort_keys=True), "minio", 0o600)
     owned_file(CONF / "launcher.py", Path(__file__).with_name("launcher.py").read_text(), "minio", 0o500)
     unit("ambari-minio.service", "minio", Path("/usr/libexec/platform-python"),

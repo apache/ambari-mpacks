@@ -1,0 +1,229 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "name": "default",
+  "description": "Basic settings, native tuning and complete configuration files. Custom properties remain available in Advanced.",
+  "configuration": {
+    "layouts": [
+      {
+        "name": "default",
+        "tabs": [
+          {
+            "name": "basic",
+            "display-name": "Basic Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "minio-env",
+                  "display-name": "minio-env",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "minio-env-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "tuning",
+            "display-name": "Native Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "minio-environment",
+                  "display-name": "minio-environment",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "minio-environment-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "placement": {
+      "configuration-layout": "default",
+      "configs": [
+        {
+          "config": "minio-env/server_host",
+          "subsection-name": "minio-env-fields"
+        },
+        {
+          "config": "minio-env/api_port",
+          "subsection-name": "minio-env-fields"
+        },
+        {
+          "config": "minio-env/console_port",
+          "subsection-name": "minio-env-fields"
+        },
+        {
+          "config": "minio-env/data_directory",
+          "subsection-name": "minio-env-fields"
+        },
+        {
+          "config": "minio-env/root_user",
+          "subsection-name": "minio-env-fields"
+        },
+        {
+          "config": "minio-env/root_password",
+          "subsection-name": "minio-env-fields"
+        },
+        {
+          "config": "minio-env/go_home",
+          "subsection-name": "minio-env-fields"
+        },
+        {
+          "config": "minio-env/source_url",
+          "subsection-name": "minio-env-fields"
+        },
+        {
+          "config": "minio-environment/MINIO_BROWSER",
+          "subsection-name": "minio-environment-fields"
+        },
+        {
+          "config": "minio-environment/MINIO_REGION_NAME",
+          "subsection-name": "minio-environment-fields"
+        },
+        {
+          "config": "minio-environment/MINIO_API_REQUESTS_MAX",
+          "subsection-name": "minio-environment-fields"
+        },
+        {
+          "config": "minio-environment/MINIO_API_REQUESTS_DEADLINE",
+          "subsection-name": "minio-environment-fields"
+        },
+        {
+          "config": "minio-environment/MINIO_COMPRESSION_ENABLE",
+          "subsection-name": "minio-environment-fields"
+        },
+        {
+          "config": "minio-environment/MINIO_COMPRESSION_EXTENSIONS",
+          "subsection-name": "minio-environment-fields"
+        },
+        {
+          "config": "minio-environment/MINIO_COMPRESSION_MIME_TYPES",
+          "subsection-name": "minio-environment-fields"
+        }
+      ]
+    },
+    "widgets": [
+      {
+        "config": "minio-env/server_host",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-env/api_port",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-env/console_port",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-env/data_directory",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-env/root_user",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-env/root_password",
+        "widget": {
+          "type": "password"
+        }
+      },
+      {
+        "config": "minio-env/go_home",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-env/source_url",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-environment/MINIO_BROWSER",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-environment/MINIO_REGION_NAME",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-environment/MINIO_API_REQUESTS_MAX",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-environment/MINIO_API_REQUESTS_DEADLINE",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-environment/MINIO_COMPRESSION_ENABLE",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-environment/MINIO_COMPRESSION_EXTENSIONS",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "minio-environment/MINIO_COMPRESSION_MIME_TYPES",
+        "widget": {
+          "type": "text-field"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configuration>
+  <property>
+    <name>MINIO_BROWSER</name>
+    <display-name>MINIO_BROWSER</display-name>
+    <value>on</value>
+    <description>Enable the browser console: on or off. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>MINIO_REGION_NAME</name>
+    <display-name>MINIO_REGION_NAME</display-name>
+    <value>us-east-1</value>
+    <description>S3 region name. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>MINIO_API_REQUESTS_MAX</name>
+    <display-name>MINIO_API_REQUESTS_MAX</display-name>
+    <value>0</value>
+    <description>Maximum concurrent API requests; zero uses automatic sizing. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>MINIO_API_REQUESTS_DEADLINE</name>
+    <display-name>MINIO_API_REQUESTS_DEADLINE</display-name>
+    <value>10s</value>
+    <description>Maximum time requests wait for an execution slot. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>MINIO_COMPRESSION_ENABLE</name>
+    <display-name>MINIO_COMPRESSION_ENABLE</display-name>
+    <value>off</value>
+    <description>Enable compression for eligible objects. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>MINIO_COMPRESSION_EXTENSIONS</name>
+    <display-name>MINIO_COMPRESSION_EXTENSIONS</display-name>
+    <value>.txt,.log,.csv,.json,.tar,.xml,.bin</value>
+    <description>File extensions eligible for compression. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>MINIO_COMPRESSION_MIME_TYPES</name>
+    <display-name>MINIO_COMPRESSION_MIME_TYPES</display-name>
+    <value>text/*,application/json,application/xml</value>
+    <description>MIME types eligible for compression. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+</configuration>

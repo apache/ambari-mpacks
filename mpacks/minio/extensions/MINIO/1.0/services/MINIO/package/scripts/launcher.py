@@ -20,12 +20,13 @@ from pathlib import Path
 
 def main():
     config = json.loads(Path("/etc/minio/ambari/runtime.json").read_text())
-    if set(config) != {"binary", "data", "api_port", "console_port", "root_user", "root_password"}:
+    if set(config) - {"environment"} != {"binary", "data", "api_port", "console_port", "root_user", "root_password"}:
         raise ValueError("Invalid protected MinIO runtime configuration")
     binary = config["binary"]
     arguments = [binary, "server", "--address", ":" + str(config["api_port"]),
                  "--console-address", ":" + str(config["console_port"]), config["data"]]
-    environment = dict(os.environ, MINIO_ROOT_USER=config["root_user"],
+    environment = dict(os.environ, **config.get("environment", {}))
+    environment.update(MINIO_ROOT_USER=config["root_user"],
                        MINIO_ROOT_PASSWORD=config["root_password"])
     os.execve(binary, arguments, environment)
 

@@ -19,6 +19,7 @@ limitations under the License.
   <components><component><name>MINIO_SERVER</name><displayName>MinIO Server</displayName><category>MASTER</category><cardinality>1</cardinality><versionAdvertised>false</versionAdvertised><commandScript><script>scripts/server.py</script><scriptType>PYTHON</scriptType><timeout>7200</timeout></commandScript><customCommands><customCommand><name>VERSION_CHECK</name><commandScript><script>scripts/server.py</script><scriptType>PYTHON</scriptType><timeout>7200</timeout></commandScript></customCommand></customCommands></component></components>
   <osSpecifics><osSpecific><osFamily>redhat8</osFamily><packages><package><name>python3-dbus</name></package><package><name>python3-gobject-base</name></package></packages></osSpecific></osSpecifics>
   <commandScript><script>scripts/service_check.py</script><scriptType>PYTHON</scriptType><timeout>900</timeout></commandScript>
-  <configuration-dependencies><config-type>minio-env</config-type></configuration-dependencies>
+  <configuration-dependencies><config-type>minio-env</config-type><config-type>minio-environment</config-type></configuration-dependencies>
   <quickLinksConfigurations><quickLinksConfiguration><fileName>quicklinks.json</fileName><default>true</default></quickLinksConfiguration></quickLinksConfigurations>
+<themes><theme><fileName>theme.json</fileName><default>true</default></theme></themes>
 </service></services></metainfo>
