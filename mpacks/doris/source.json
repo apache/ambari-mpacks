@@ -1,0 +1,14 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "schema_version": 1,
+  "software_version": "4.1.4",
+  "source_tag": "4.1.4",
+  "source_commit": "ad35a140c7fd0b842f18c23300bac581f7d04326",
+  "binary": {
+    "url": "https://apache-doris-releases.oss-accelerate.aliyuncs.com/apache-doris-4.1.4-bin-arm64.tar.gz",
+    "sha512": "15ba9dbb76b60b54360cd8580e3433cad0fa85e216512da72afc3559eff2eac708dc839f1634e2415d4b54a3abe0722d98471205b9fd52e12380d823ee144dbc",
+    "compressed_bytes": 4351941761
+  },
+  "topology": "SINGLE_FE_SINGLE_BE",
+  "validation_status": "IMPLEMENTED_PENDING_ACCEPTANCE"
+}

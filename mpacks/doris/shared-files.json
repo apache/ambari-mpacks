@@ -1,0 +1,12 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "schema_version": 1,
+  "files": [
+    {"source": "shared/observations.py", "target": "extensions/DORIS/1.0/services/DORIS/package/scripts/observations.py", "digest": "8fb22532d4012faf25c2f38a56bbd713738016716fa6c0606fb56b46ce194a99"},
+    {"source": "shared/managed_runtime.py", "target": "extensions/DORIS/1.0/services/DORIS/package/scripts/managed_runtime.py", "digest": "542098b830a0580c4f699c80be9ce1133017edfd0620d629f1691c988fdfaab0"},
+    {"source": "shared/managed_service.py", "target": "extensions/DORIS/1.0/services/DORIS/package/scripts/managed_service.py", "digest": "8b3338e0b6a895cfb3205e2053aa05e9f7e7e2a56f559417e8a9873ad132ff41"},
+    {"source": "shared/managed_service_v2.py", "target": "extensions/DORIS/1.0/services/DORIS/package/scripts/managed_service_v2.py", "digest": "b561538a70028de8c83d1ced93e4dc6f006ed99c1b4cd28a603aa610a971c5eb"},
+    {"source": "shared/managed_topology.py", "target": "extensions/DORIS/1.0/services/DORIS/package/scripts/managed_topology.py", "digest": "cd9ca507841e3b4c6f6e623f866e79e2fce83e818b1edecb0f8cc6c4a8185f43"},
+    {"source": "shared/verified_archive.py", "target": "extensions/DORIS/1.0/services/DORIS/package/scripts/verified_archive.py", "digest": "f02828b595e5b4614be24f88d102ee0f02f7563a65fe8c79e7fa13c9ff2ea2ab"}
+  ]
+}
