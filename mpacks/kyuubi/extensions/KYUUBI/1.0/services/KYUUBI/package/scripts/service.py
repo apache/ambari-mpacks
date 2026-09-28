@@ -23,7 +23,7 @@ from resource_management.core.exceptions import ComponentIsNotRunning, Fail
 from resource_management.libraries.script.script import Script
 from observations import observer_python
 from results import validate_result
-from native_config import collect
+from native_config import collect, properties
 
 
 class Kyuubi(Script):
@@ -33,12 +33,12 @@ class Kyuubi(Script):
         parameters = dict(config["configurations"]["kyuubi-env"])
         parameters["defaults"] = dict(config["configurations"]["kyuubi-defaults"])
         parameters["native_configs"] = collect(config["configurations"], "kyuubi")
-        if not parameters["defaults"].get("kyuubi.ha.addresses"):
+        if not properties(parameters, "kyuubi-defaults").get("kyuubi.ha.addresses"):
             hosts = config.get("clusterHostInfo", {}).get("zookeeper_hosts", [])
             if not hosts:
                 raise Fail("Kyuubi requires an explicit or assigned ZooKeeper quorum")
             port = config.get("configurations", {}).get("zoo.cfg", {}).get("clientPort", "2181")
-            parameters["defaults"]["kyuubi.ha.addresses"] = ",".join(host + ":" + str(port) for host in hosts)
+            parameters["zookeeper_quorum"] = ",".join(host + ":" + str(port) for host in hosts)
         request = {
             "schema_version": 1, "definition_snapshot": command["mpack_definition_snapshot"],
             "execution_id": command["mpack_execution_id"], "task_id": config.get("taskId"),

@@ -13,24 +13,33 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
-  <property><name>kyuubi.frontend.bind.host</name><value>0.0.0.0</value><description>Listener bind address.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>kyuubi.frontend.thrift.binary.bind.port</name><value>10009</value><description>JDBC listener port.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>kyuubi.ha.addresses</name><value></value><description>Existing ZooKeeper quorum; empty derives it from the assigned ZooKeeper hosts.</description><value-attributes><empty-value-valid>true</empty-value-valid></value-attributes><on-ambari-upgrade add="true"/></property>
-  <property><name>kyuubi.ha.namespace</name><value>ambari-kyuubi</value><description>Service discovery namespace.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.master</name><value>yarn</value><description>YARN integration; local[2] can isolate initial engine validation.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.submit.deployMode</name><value>client</value><description>Spark deployment mode.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.driver.memory</name><value>1g</value><description>Engine driver memory.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.executor.memory</name><value>1g</value><description>Engine executor memory.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.executor.instances</name><value>1</value><description>Initial engine executor count.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>kyuubi.engine.share.level</name><value>CONNECTION</value><description>Dedicated engine per session for isolated acceptance.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>kyuubi.engine.idle.timeout</name><value>PT1M</value><description>Release idle acceptance engines.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>kyuubi.session.engine.initialize.timeout</name><value>PT3M</value><description>Maximum wait for the SQL engine to initialize.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>kyuubi.session.idle.timeout</name><value>PT6H</value><description>Close sessions idle for this duration.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>kyuubi.operation.idle.timeout</name><value>PT3H</value><description>Close idle operations after this duration.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.yarn.queue</name><value>default</value><description>YARN queue used by the Spark engine.</description><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.executor.cores</name><value>1</value><description>CPU cores per executor.</description><value-attributes><type>int</type><minimum>1</minimum></value-attributes><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.sql.shuffle.partitions</name><value>200</value><description>Default shuffle partitions for Spark SQL.</description><value-attributes><type>int</type><minimum>1</minimum></value-attributes><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.sql.adaptive.enabled</name><value>true</value><description>Enable Spark adaptive query execution.</description><value-attributes><type>boolean</type></value-attributes><on-ambari-upgrade add="true"/></property>
-  <property><name>spark.dynamicAllocation.enabled</name><value>false</value><description>Enable only after configuring the required Spark shuffle support.</description><value-attributes><type>boolean</type></value-attributes><on-ambari-upgrade add="true"/></property>
+<configuration supports_adding_forbidden="true">
+  <property>
+    <name>content</name>
+    <display-name>kyuubi-defaults.conf</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+kyuubi.frontend.bind.host=0.0.0.0
+kyuubi.frontend.thrift.binary.bind.port=10009
+kyuubi.ha.addresses=
+kyuubi.ha.namespace=ambari-kyuubi
+spark.master=yarn
+spark.submit.deployMode=client
+spark.driver.memory=1g
+spark.executor.memory=1g
+spark.executor.instances=1
+kyuubi.engine.share.level=CONNECTION
+kyuubi.engine.idle.timeout=PT1M
+kyuubi.session.engine.initialize.timeout=PT3M
+kyuubi.session.idle.timeout=PT6H
+kyuubi.operation.idle.timeout=PT3H
+spark.yarn.queue=default
+spark.executor.cores=1
+spark.sql.shuffle.partitions=200
+spark.sql.adaptive.enabled=true
+spark.dynamicAllocation.enabled=false
+</value>
+    <description>Complete properties configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>kyuubi-defaults.conf</property-file-name><property-file-type>properties</property-file-type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
 </configuration>

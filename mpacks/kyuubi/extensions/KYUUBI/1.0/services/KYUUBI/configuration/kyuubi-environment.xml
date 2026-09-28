@@ -13,21 +13,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
+<configuration supports_adding_forbidden="true">
   <property>
-    <name>KYUUBI_JAVA_OPTS</name>
-    <display-name>KYUUBI_JAVA_OPTS</display-name>
-    <value>-Xmx768m</value>
-    <description>Server JVM options. Shell metacharacters are quoted as literal values. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>SPARK_LOCAL_DIRS</name>
-    <display-name>SPARK_LOCAL_DIRS</display-name>
-    <value>/var/lib/kyuubi/work</value>
-    <description>Local Spark scratch directories. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
+    <name>content</name>
+    <display-name>kyuubi-env.sh</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+KYUUBI_JAVA_OPTS='-Xmx768m'
+SPARK_LOCAL_DIRS='/var/lib/kyuubi/work'
+</value>
+    <description>Complete environment configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>kyuubi-env.sh</property-file-name><property-file-type>environment</property-file-type></value-attributes>
     <on-ambari-upgrade add="true"/>
   </property>
 </configuration>

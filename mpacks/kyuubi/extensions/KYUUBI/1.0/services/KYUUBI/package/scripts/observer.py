@@ -52,11 +52,16 @@ def settings(parameters):
     host = parameters.get("server_host", "")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9.-]*", host):
         raise ValueError("An explicit Kyuubi service-check hostname is required")
-    defaults = parameters.get("defaults")
+    from native_config import properties as native_properties
+    defaults = native_properties(parameters, "kyuubi-defaults") if "native_configs" in parameters else parameters.get("defaults")
+    if isinstance(defaults, dict) and not defaults.get("kyuubi.ha.addresses") and parameters.get("zookeeper_quorum"):
+        defaults["kyuubi.ha.addresses"] = parameters["zookeeper_quorum"]
+        if hasattr(defaults, "explicit"):
+            defaults.explicit.discard("kyuubi.ha.addresses")
     if not isinstance(defaults, dict):
         raise ValueError("Kyuubi defaults are required")
     from native_config import validate_properties
-    validate_properties(defaults, "kyuubi-defaults")
+    validate_properties(defaults, "kyuubi-defaults", multiline=hasattr(defaults, "source"))
     port = int(defaults.get("kyuubi.frontend.thrift.binary.bind.port", "10009"))
     if not 1 <= port <= 65535 or not defaults.get("kyuubi.ha.addresses"):
         raise ValueError("A valid Kyuubi port and ZooKeeper quorum are required")
@@ -100,7 +105,7 @@ def configure(parameters, client=False):
         "kyuubi.authentication": "NONE", "kyuubi.engine.type": "SPARK_SQL",
         "kyuubi.frontend.protocols": "THRIFT_BINARY", "kyuubi.engine.doAs.enabled": "false",
     }
-    properties = dict(defaults)
+    properties = defaults.copy() if not hasattr(defaults, "explicit") else defaults
     properties.setdefault("kyuubi.session.engine.initialize.timeout", "PT3M")
     for key, value in fixed.items():
         if key in properties and properties[key] != value:
