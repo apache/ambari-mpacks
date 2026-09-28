@@ -1,0 +1,14 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "schema_version": 1,
+  "software_version": "9.5.4",
+  "source_tag": "v9.5.4",
+  "source_commit": "9170df19cae1adb107b7b489b4d82dec66d7a337",
+  "binary": {
+    "url": "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-9.5.4-linux-aarch64.tar.gz",
+    "sha512": "51d42530da01deb81b538c2d4c27f6f023f1d11d9415865b5dbabab7d6699831f8fc8aaffb1f73d2d5915a212d613d9ee0e44debce361a25a7e4b59663b1701c",
+    "license": "See the upstream Elasticsearch binary distribution license"
+  },
+  "topology": "SINGLE_NODE_AUTHENTICATED_HTTPS",
+  "validation_status": "IMPLEMENTED_PENDING_ACCEPTANCE"
+}
