@@ -22,6 +22,7 @@ limitations under the License.
   </components>
   <osSpecifics><osSpecific><osFamily>redhat8</osFamily><packages><package><name>python3-dbus</name></package><package><name>python3-gobject-base</name></package></packages></osSpecific></osSpecifics>
   <commandScript><script>scripts/service_check.py</script><scriptType>PYTHON</scriptType><timeout>900</timeout></commandScript>
-  <configuration-dependencies><config-type>trino-env</config-type></configuration-dependencies>
+  <configuration-dependencies><config-type>trino-env</config-type><config-type>trino-catalogs</config-type><config-type>trino-config</config-type><config-type>trino-jvm</config-type><config-type>trino-log</config-type><config-type>trino-node</config-type></configuration-dependencies>
   <quickLinksConfigurations><quickLinksConfiguration><fileName>quicklinks.json</fileName><default>true</default></quickLinksConfiguration></quickLinksConfigurations>
+<themes><theme><fileName>theme.json</fileName><default>true</default></theme></themes>
 </service></services></metainfo>

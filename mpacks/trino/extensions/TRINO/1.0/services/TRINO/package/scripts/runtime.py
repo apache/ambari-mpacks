@@ -25,6 +25,7 @@ from pathlib import Path
 from managed_runtime import directory, host_value, json_http, main, no_links, owned_file, path_value, port_value, reload_units, unit
 from observations import unit_observation
 from verified_archive import install_archive, verify_install
+from native_config import catalogs, content, jvm_options, properties, render_properties
 
 VERSION = "483"
 SHA512 = "5b6920dcb807608e13bb0f2d6d062233ffafe627d035ac37c37da28dbfd0933f10a37871505247ef65e1f973f503b341f9038d0a52773e0ceb0dcf6d037fb6ee"
@@ -74,6 +75,17 @@ def configure(parameters):
     role, coordinator, workers, hostname, port, java, heap, environment = settings(parameters)
     if role == "check":
         raise ValueError("A service check cannot configure a node")
+    options = properties(parameters, "trino-config", {
+        "coordinator": "true" if role == "coordinator" else "false",
+        "http-server.http.port": port, "discovery.uri": "http://" + coordinator + ":" + str(port)},
+        {"node-scheduler.include-coordinator": "true"} if role == "coordinator" else {},
+        reserved=("http-server.authentication.", "http-server.https.", "internal-communication."))
+    if role == "worker":
+        options.pop("node-scheduler.include-coordinator", None)
+    jvm = ["-Xmx" + heap] + jvm_options(parameters, "trino-jvm",
+        "-server\n-XX:+UseG1GC\n-XX:+ExitOnOutOfMemoryError\n--add-modules=jdk.incubator.vector\n")
+    catalog_files = catalogs(parameters)
+    logging = render_properties(properties(parameters, "trino-log", defaults={"io.trino": "INFO"}))
     installed()
     for path in (CONF, CONF / "catalog", DATA, LOGS):
         directory(path, "trino")
@@ -84,17 +96,32 @@ def configure(parameters):
     node_id = identity.read_text().strip()
     if str(uuid.UUID(node_id)) != node_id:
         raise ValueError("Retained Trino node identity is invalid")
-    owned_file(CONF / "node.properties", "node.environment=" + environment + "\nnode.id=" + node_id
-               + "\nnode.data-dir=" + str(DATA) + "\n", "trino")
-    owned_file(CONF / "jvm.config", "-server\n-Xmx" + heap + "\n-XX:+UseG1GC\n"
-               "-XX:+ExitOnOutOfMemoryError\n--add-modules=jdk.incubator.vector\n", "trino")
-    options = ["coordinator=" + ("true" if role == "coordinator" else "false"),
-               "http-server.http.port=" + str(port),
-               "discovery.uri=http://" + coordinator + ":" + str(port)]
-    if role == "coordinator":
-        options.append("node-scheduler.include-coordinator=true")
-    owned_file(CONF / "config.properties", "\n".join(options) + "\n", "trino")
-    owned_file(CONF / "catalog/tpch.properties", "connector.name=tpch\n", "trino")
+    node = properties(parameters, "trino-node", {
+        "node.environment": environment, "node.id": node_id, "node.data-dir": str(DATA)})
+    owned_file(CONF / "node.properties", render_properties(node), "trino")
+    owned_file(CONF / "jvm.config", "\n".join(jvm) + "\n", "trino")
+    owned_file(CONF / "config.properties", render_properties(options), "trino")
+    owned_file(CONF / "log.properties", logging, "trino")
+    inventory = CONF / "catalogs.json"
+    no_links(inventory)
+    previous = json.loads(inventory.read_text()) if inventory.exists() else ["tpch.properties"]
+    if not isinstance(previous, list) or any(not isinstance(n, str) or not re.fullmatch(r"[a-z][a-z0-9_-]*\.properties", n) for n in previous):
+        raise ValueError("Invalid managed catalog inventory")
+    for name, value in catalog_files.items():
+        target = CONF / "catalog" / name
+        no_links(target)
+        if target.exists() and name not in previous:
+            raise ValueError("An unmanaged catalog exists; reconcile it before configuration")
+    # Reserve validated names before writes so a partial write remains retryable.
+    owned_file(inventory, json.dumps(sorted(set(previous) | set(catalog_files))), "trino", 0o600)
+    for name, value in catalog_files.items():
+        owned_file(CONF / "catalog" / name, value, "trino", 0o600)
+    for name in set(previous) - set(catalog_files):
+        target = CONF / "catalog" / name
+        no_links(target)
+        if target.exists():
+            target.unlink()
+    owned_file(inventory, json.dumps(sorted(catalog_files)), "trino", 0o600)
     unit("ambari-trino.service", "trino", HOME / "bin/launcher", {"JAVA_HOME": str(java)}, DATA,
          "-etc-dir " + str(CONF) + " -data-dir " + str(DATA) + " run")
     reload_units()
