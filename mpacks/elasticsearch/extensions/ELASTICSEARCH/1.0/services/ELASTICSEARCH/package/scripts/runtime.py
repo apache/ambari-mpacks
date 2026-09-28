@@ -159,6 +159,7 @@ def keystore(password):
 
 
 def configure(parameters):
+    from native_config import content, jvm_options, properties, yaml_properties
     role, host, http, transport, cluster, storage, heap, password = settings(parameters)
     if role == "check":
         raise ValueError("A service check cannot configure Elasticsearch")
@@ -187,7 +188,17 @@ def configure(parameters):
              "xpack.security.transport.ssl.key: " + str(CONF / "node.key"),
              "xpack.security.transport.ssl.certificate: " + str(CONF / "node.crt"),
              "xpack.security.transport.ssl.certificate_authorities: [" + str(CONF / "node.crt") + "]"]
-    owned_file(CONF / "elasticsearch.yml", "\n".join(lines) + "\n", "elasticsearch")
+    managed = dict(line.split(": ", 1) for line in lines)
+    for key in ("xpack.security.http.ssl.certificate_authorities", "xpack.security.transport.ssl.certificate_authorities"):
+        managed[key] = json.dumps([str(CONF / "node.crt")])
+    values = properties(parameters, "elasticsearch-settings", managed,
+                        reserved=("xpack.security.", "discovery.", "cluster.initial_master_nodes"))
+    owned_file(CONF / "elasticsearch.yml", yaml_properties(values), "elasticsearch")
+    options = jvm_options(parameters, "elasticsearch-jvm", "# Additional JVM options, one per line.\n")
+    directory(CONF / "jvm.options.d", "elasticsearch")
+    owned_file(CONF / "jvm.options.d/99-ambari.options", "\n".join(options) + "\n", "elasticsearch")
+    owned_file(CONF / "log4j2.properties", content(parameters, "elasticsearch-log4j2",
+               (HOME / "config/log4j2.properties").read_text()), "elasticsearch")
     keystore(password)
     maximum = Path("/proc/sys/vm/max_map_count")
     if not maximum.is_file() or int(maximum.read_text().strip()) < 262144:

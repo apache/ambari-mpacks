@@ -1,0 +1,277 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "name": "default",
+  "description": "Basic settings, native tuning and complete configuration files. Custom properties remain available in Advanced.",
+  "configuration": {
+    "layouts": [
+      {
+        "name": "default",
+        "tabs": [
+          {
+            "name": "basic",
+            "display-name": "Basic Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "elasticsearch-env",
+                  "display-name": "elasticsearch-env",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "elasticsearch-env-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "tuning",
+            "display-name": "Native Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "elasticsearch-settings",
+                  "display-name": "elasticsearch-settings",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "elasticsearch-settings-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "files",
+            "display-name": "Configuration Files",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 2,
+              "sections": [
+                {
+                  "name": "elasticsearch-jvm",
+                  "display-name": "elasticsearch-jvm",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "elasticsearch-jvm-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "elasticsearch-log4j2",
+                  "display-name": "elasticsearch-log4j2",
+                  "row-index": 1,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "elasticsearch-log4j2-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "placement": {
+      "configuration-layout": "default",
+      "configs": [
+        {
+          "config": "elasticsearch-env/node_host",
+          "subsection-name": "elasticsearch-env-fields"
+        },
+        {
+          "config": "elasticsearch-env/cluster_name",
+          "subsection-name": "elasticsearch-env-fields"
+        },
+        {
+          "config": "elasticsearch-env/http_port",
+          "subsection-name": "elasticsearch-env-fields"
+        },
+        {
+          "config": "elasticsearch-env/transport_port",
+          "subsection-name": "elasticsearch-env-fields"
+        },
+        {
+          "config": "elasticsearch-env/data_directory",
+          "subsection-name": "elasticsearch-env-fields"
+        },
+        {
+          "config": "elasticsearch-env/heap_size",
+          "subsection-name": "elasticsearch-env-fields"
+        },
+        {
+          "config": "elasticsearch-env/admin_password",
+          "subsection-name": "elasticsearch-env-fields"
+        },
+        {
+          "config": "elasticsearch-env/binary_url",
+          "subsection-name": "elasticsearch-env-fields"
+        },
+        {
+          "config": "elasticsearch-settings/action.destructive_requires_name",
+          "subsection-name": "elasticsearch-settings-fields"
+        },
+        {
+          "config": "elasticsearch-settings/http.max_content_length",
+          "subsection-name": "elasticsearch-settings-fields"
+        },
+        {
+          "config": "elasticsearch-settings/indices.memory.index_buffer_size",
+          "subsection-name": "elasticsearch-settings-fields"
+        },
+        {
+          "config": "elasticsearch-settings/search.max_buckets",
+          "subsection-name": "elasticsearch-settings-fields"
+        },
+        {
+          "config": "elasticsearch-settings/cluster.max_shards_per_node",
+          "subsection-name": "elasticsearch-settings-fields"
+        },
+        {
+          "config": "elasticsearch-jvm/content",
+          "subsection-name": "elasticsearch-jvm-fields"
+        },
+        {
+          "config": "elasticsearch-log4j2/content",
+          "subsection-name": "elasticsearch-log4j2-fields"
+        }
+      ]
+    },
+    "widgets": [
+      {
+        "config": "elasticsearch-env/node_host",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-env/cluster_name",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-env/http_port",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-env/transport_port",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-env/data_directory",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-env/heap_size",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-env/admin_password",
+        "widget": {
+          "type": "password"
+        }
+      },
+      {
+        "config": "elasticsearch-env/binary_url",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-settings/action.destructive_requires_name",
+        "widget": {
+          "type": "toggle"
+        }
+      },
+      {
+        "config": "elasticsearch-settings/http.max_content_length",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-settings/indices.memory.index_buffer_size",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-settings/search.max_buckets",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-settings/cluster.max_shards_per_node",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "elasticsearch-jvm/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "elasticsearch-log4j2/content",
+        "widget": {
+          "type": "text-area"
+        }
+      }
+    ]
+  }
+}

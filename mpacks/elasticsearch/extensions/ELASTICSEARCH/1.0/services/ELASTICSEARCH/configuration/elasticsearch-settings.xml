@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configuration>
+  <property>
+    <name>action.destructive_requires_name</name>
+    <display-name>action.destructive_requires_name</display-name>
+    <value>true</value>
+    <description>Require explicit index names for destructive actions. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>boolean</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>http.max_content_length</name>
+    <display-name>http.max_content_length</display-name>
+    <value>100mb</value>
+    <description>Maximum HTTP request body. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>indices.memory.index_buffer_size</name>
+    <display-name>indices.memory.index_buffer_size</display-name>
+    <value>10%</value>
+    <description>Heap fraction used for indexing buffers. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>search.max_buckets</name>
+    <display-name>search.max_buckets</display-name>
+    <value>65536</value>
+    <description>Maximum aggregation buckets per response. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>cluster.max_shards_per_node</name>
+    <display-name>cluster.max_shards_per_node</display-name>
+    <value>1000</value>
+    <description>Maximum open shards per data node. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+</configuration>
