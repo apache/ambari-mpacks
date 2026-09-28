@@ -107,12 +107,22 @@ class KyuubiTests(unittest.TestCase):
                 Path(command[-1]).write_text(json.dumps(value), encoding="utf-8")
             return SimpleNamespace(returncode=returncode, stdout=b"SUCCESS noise from another operation")
         account = SimpleNamespace(pw_uid=os.getuid(), pw_gid=os.getgid())
-        with patch.object(observer.pwd, "getpwnam", return_value=account), patch.object(
+        with patch.object(observer, "wait_for_listener"), patch.object(observer.pwd, "getpwnam", return_value=account), patch.object(
                 observer.subprocess, "run", side_effect=subprocess):
             return observer.sql_observation(request())
 
     def test_sql_observation_checks_file_and_lineage_despite_diagnostic_noise(self):
         self.assertEqual(self.run_jdbc(result()), result()["observations"])
+
+    def test_listener_wait_retries_refused_connections_but_is_not_sql_success(self):
+        import socket
+        with patch("socket.create_connection", side_effect=[ConnectionRefusedError(), MagicMock()]), patch("time.sleep") as sleep:
+            observer.wait_for_listener("node.test", 10009)
+            sleep.assert_called_once_with(1)
+        with patch("socket.create_connection", side_effect=socket.timeout()), self.assertRaises(RuntimeError):
+            observer.wait_for_listener("node.test", 10009, timeout=0)
+        with patch("socket.create_connection", side_effect=socket.gaierror()), self.assertRaises(socket.gaierror):
+            observer.wait_for_listener("node.test", 10009)
 
     def test_process_success_without_result_is_not_sql_success(self):
         with self.assertRaises(RuntimeError):
@@ -184,7 +194,8 @@ class KyuubiTests(unittest.TestCase):
                     observer.pwd, "getpwnam", return_value=account):
                 observation = observer.configure(parameters(), client=True)
             self.assertTrue(observation["client_only"])
-            self.assertEqual(len(observation["files"]), 2)
+            self.assertEqual(len(observation["files"]), 3)
+            self.assertIn("rootLogger.level = info", (root / "conf/log4j2.properties").read_text())
             content = (root / "conf/kyuubi-defaults.conf").read_text()
             self.assertIn("kyuubi.engine.type=SPARK_SQL\n", content)
             self.assertIn("spark.master=local[2]\n", content)
@@ -216,7 +227,7 @@ class KyuubiTests(unittest.TestCase):
             unit = (root / "units" / observer.UNIT).read_text()
             self.assertIn("SuccessExitStatus=143\n", unit)
             self.assertIn("KillMode=control-group\n", unit)
-            self.assertEqual(len(result["files"]), 3)
+            self.assertEqual(len(result["files"]), 4)
             manager.Reload.assert_called_once()
             bus.close.assert_called_once()
 

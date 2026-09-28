@@ -48,6 +48,7 @@ limitations under the License.
       <package><name>python3-gobject-base</name></package>
     </packages></osSpecific></osSpecifics>
     <commandScript><script>scripts/service_check.py</script><scriptType>PYTHON</scriptType><timeout>600</timeout></commandScript>
-    <configuration-dependencies><config-type>kyuubi-env</config-type><config-type>kyuubi-defaults</config-type><config-type>core-site</config-type><config-type>hdfs-site</config-type><config-type>hadoop-env</config-type><config-type>yarn-site</config-type></configuration-dependencies>
+    <configuration-dependencies><config-type>kyuubi-env</config-type><config-type>kyuubi-defaults</config-type><config-type>core-site</config-type><config-type>hdfs-site</config-type><config-type>hadoop-env</config-type><config-type>yarn-site</config-type><config-type>kyuubi-environment</config-type><config-type>kyuubi-log4j2</config-type></configuration-dependencies>
+    <themes><theme><fileName>theme.json</fileName><default>true</default></theme></themes>
   </service></services>
 </metainfo>

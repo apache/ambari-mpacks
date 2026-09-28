@@ -55,9 +55,8 @@ def settings(parameters):
     defaults = parameters.get("defaults")
     if not isinstance(defaults, dict):
         raise ValueError("Kyuubi defaults are required")
-    for key, value in defaults.items():
-        if not isinstance(key, str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_.]+", key) or not isinstance(value, str) or any(c in value for c in "\r\n\x00"):
-            raise ValueError("Invalid Kyuubi configuration property")
+    from native_config import validate_properties
+    validate_properties(defaults, "kyuubi-defaults")
     port = int(defaults.get("kyuubi.frontend.thrift.binary.bind.port", "10009"))
     if not 1 <= port <= 65535 or not defaults.get("kyuubi.ha.addresses"):
         raise ValueError("A valid Kyuubi port and ZooKeeper quorum are required")
@@ -89,6 +88,7 @@ def write_owned(path, content, account):
 
 
 def configure(parameters, client=False):
+    from native_config import LOG4J_DEFAULT, content, environment, render_properties, shell_exports
     paths, defaults, host, port = settings(parameters)
     account = pwd.getpwnam("kyuubi")
     for path in (CONFIG, DATA, LOGS, DATA / "work", DATA / "run"):
@@ -99,25 +99,25 @@ def configure(parameters, client=False):
     fixed = {
         "kyuubi.authentication": "NONE", "kyuubi.engine.type": "SPARK_SQL",
         "kyuubi.frontend.protocols": "THRIFT_BINARY", "kyuubi.engine.doAs.enabled": "false",
-        "kyuubi.session.engine.initialize.timeout": "PT3M",
     }
     properties = dict(defaults)
+    properties.setdefault("kyuubi.session.engine.initialize.timeout", "PT3M")
     for key, value in fixed.items():
         if key in properties and properties[key] != value:
             raise ValueError("Unsupported Kyuubi authentication or engine configuration")
         properties[key] = value
-    rendered = "".join(key + "=" + value + "\n" for key, value in sorted(properties.items()))
-    environment = (
-        "export JAVA_HOME=" + paths["java_home"] + "\n"
-        "export SPARK_HOME=" + paths["spark_home"] + "\n"
-        "export HADOOP_CONF_DIR=" + paths["hadoop_conf_dir"] + "\n"
-        "export KYUUBI_LOG_DIR=" + str(LOGS) + "\n"
-        "export KYUUBI_PID_DIR=" + str(DATA / "run") + "\n"
-        "export KYUUBI_WORK_DIR_ROOT=" + str(DATA / "work") + "\n"
-        "export KYUUBI_JAVA_OPTS='-Xmx768m'\n")
+    rendered = render_properties(properties)
+    variables = environment(parameters, "kyuubi-environment", {
+        "JAVA_HOME": paths["java_home"], "SPARK_HOME": paths["spark_home"],
+        "HADOOP_CONF_DIR": paths["hadoop_conf_dir"], "KYUUBI_CONF_DIR": str(CONFIG),
+        "KYUUBI_LOG_DIR": str(LOGS), "KYUUBI_PID_DIR": str(DATA / "run"),
+        "KYUUBI_WORK_DIR_ROOT": str(DATA / "work")})
+    variables.setdefault("KYUUBI_JAVA_OPTS", "-Xmx768m")
+    logging = content(parameters, "kyuubi-log4j2", LOG4J_DEFAULT)
     observations = [
         write_owned(CONFIG / "kyuubi-defaults.conf", rendered, account),
-        write_owned(CONFIG / "kyuubi-env.sh", environment, account),
+        write_owned(CONFIG / "kyuubi-env.sh", shell_exports(variables), account),
+        write_owned(CONFIG / "log4j2.properties", logging, account),
     ]
     if not client:
         for binary in (Path(paths["kyuubi_home"]) / "bin/kyuubi",
@@ -143,8 +143,23 @@ def configure(parameters, client=False):
     return {"files": observations, "client_only": client}
 
 
+def wait_for_listener(host, port, timeout=60):
+    import socket
+    import time
+    deadline = time.monotonic() + timeout
+    while True:
+        try:
+            with socket.create_connection((host, port), timeout=3):
+                return
+        except (ConnectionRefusedError, socket.timeout):
+            if time.monotonic() >= deadline:
+                raise RuntimeError("Kyuubi JDBC listener is not ready")
+            time.sleep(1)
+
+
 def sql_observation(request):
     paths, defaults, host, port = settings(request["parameters"])
+    wait_for_listener(host, port)
     account = pwd.getpwnam("kyuubi")
     with tempfile.TemporaryDirectory(prefix="ambari-kyuubi-jdbc-") as directory:
         os.chown(directory, account.pw_uid, account.pw_gid)
@@ -193,7 +208,8 @@ def execute(request):
         observed["sql"] = sql_observation(request)
     elif action != "version":
         raise ValueError("Unsupported Kyuubi action")
-    return dict(request, outcome="APPLIED", observations=observed)
+    return dict({key: value for key, value in request.items() if key != "parameters"},
+                outcome="APPLIED", observations=observed)
 
 
 if __name__ == "__main__":
@@ -201,7 +217,7 @@ if __name__ == "__main__":
     try:
         result = execute(request)
     except Exception as error:
-        atomic_json(sys.argv[2], dict(request, outcome="UNRESOLVED",
+        atomic_json(sys.argv[2], dict({key: value for key, value in request.items() if key != "parameters"}, outcome="UNRESOLVED",
                                      observations=(error.observations if isinstance(error, SqlObservationError)
                                                    else {"error_type": type(error).__name__})))
         raise SystemExit(1)

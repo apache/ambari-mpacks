@@ -1,0 +1,407 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "name": "default",
+  "description": "Basic settings, native tuning and complete configuration files. Custom properties remain available in Advanced.",
+  "configuration": {
+    "layouts": [
+      {
+        "name": "default",
+        "tabs": [
+          {
+            "name": "basic",
+            "display-name": "Basic Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "kyuubi-env",
+                  "display-name": "kyuubi-env",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "kyuubi-env-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "tuning",
+            "display-name": "Native Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 2,
+              "sections": [
+                {
+                  "name": "kyuubi-defaults",
+                  "display-name": "kyuubi-defaults",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "kyuubi-defaults-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "kyuubi-environment",
+                  "display-name": "kyuubi-environment",
+                  "row-index": 1,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "kyuubi-environment-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "files",
+            "display-name": "Configuration Files",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "kyuubi-log4j2",
+                  "display-name": "kyuubi-log4j2",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "kyuubi-log4j2-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "placement": {
+      "configuration-layout": "default",
+      "configs": [
+        {
+          "config": "kyuubi-env/kyuubi_home",
+          "subsection-name": "kyuubi-env-fields"
+        },
+        {
+          "config": "kyuubi-env/package_name",
+          "subsection-name": "kyuubi-env-fields"
+        },
+        {
+          "config": "kyuubi-env/spark_home",
+          "subsection-name": "kyuubi-env-fields"
+        },
+        {
+          "config": "kyuubi-env/java_home",
+          "subsection-name": "kyuubi-env-fields"
+        },
+        {
+          "config": "kyuubi-env/server_host",
+          "subsection-name": "kyuubi-env-fields"
+        },
+        {
+          "config": "kyuubi-env/hadoop_conf_dir",
+          "subsection-name": "kyuubi-env-fields"
+        },
+        {
+          "config": "kyuubi-defaults/kyuubi.frontend.bind.host",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/kyuubi.frontend.thrift.binary.bind.port",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/kyuubi.ha.addresses",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/kyuubi.ha.namespace",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.master",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.submit.deployMode",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.driver.memory",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.executor.memory",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.executor.instances",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/kyuubi.engine.share.level",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/kyuubi.engine.idle.timeout",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/kyuubi.session.engine.initialize.timeout",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/kyuubi.session.idle.timeout",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/kyuubi.operation.idle.timeout",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.yarn.queue",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.executor.cores",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.sql.shuffle.partitions",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.sql.adaptive.enabled",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-defaults/spark.dynamicAllocation.enabled",
+          "subsection-name": "kyuubi-defaults-fields"
+        },
+        {
+          "config": "kyuubi-environment/KYUUBI_JAVA_OPTS",
+          "subsection-name": "kyuubi-environment-fields"
+        },
+        {
+          "config": "kyuubi-environment/SPARK_LOCAL_DIRS",
+          "subsection-name": "kyuubi-environment-fields"
+        },
+        {
+          "config": "kyuubi-log4j2/content",
+          "subsection-name": "kyuubi-log4j2-fields"
+        }
+      ]
+    },
+    "widgets": [
+      {
+        "config": "kyuubi-env/kyuubi_home",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-env/package_name",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-env/spark_home",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-env/java_home",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-env/server_host",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-env/hadoop_conf_dir",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/kyuubi.frontend.bind.host",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/kyuubi.frontend.thrift.binary.bind.port",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/kyuubi.ha.addresses",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/kyuubi.ha.namespace",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.master",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.submit.deployMode",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.driver.memory",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.executor.memory",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.executor.instances",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/kyuubi.engine.share.level",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/kyuubi.engine.idle.timeout",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/kyuubi.session.engine.initialize.timeout",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/kyuubi.session.idle.timeout",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/kyuubi.operation.idle.timeout",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.yarn.queue",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.executor.cores",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.sql.shuffle.partitions",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.sql.adaptive.enabled",
+        "widget": {
+          "type": "toggle"
+        }
+      },
+      {
+        "config": "kyuubi-defaults/spark.dynamicAllocation.enabled",
+        "widget": {
+          "type": "toggle"
+        }
+      },
+      {
+        "config": "kyuubi-environment/KYUUBI_JAVA_OPTS",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-environment/SPARK_LOCAL_DIRS",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "kyuubi-log4j2/content",
+        "widget": {
+          "type": "text-area"
+        }
+      }
+    ]
+  }
+}

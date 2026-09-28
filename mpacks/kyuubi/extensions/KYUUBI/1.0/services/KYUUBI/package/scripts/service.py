@@ -23,6 +23,7 @@ from resource_management.core.exceptions import ComponentIsNotRunning, Fail
 from resource_management.libraries.script.script import Script
 from observations import observer_python
 from results import validate_result
+from native_config import collect
 
 
 class Kyuubi(Script):
@@ -31,6 +32,7 @@ class Kyuubi(Script):
         command = config["commandParams"]
         parameters = dict(config["configurations"]["kyuubi-env"])
         parameters["defaults"] = dict(config["configurations"]["kyuubi-defaults"])
+        parameters["native_configs"] = collect(config["configurations"], "kyuubi")
         if not parameters["defaults"].get("kyuubi.ha.addresses"):
             hosts = config.get("clusterHostInfo", {}).get("zookeeper_hosts", [])
             if not hosts:
