@@ -20,6 +20,7 @@ limitations under the License.
 <component><name>CELEBORN_WORKER</name><displayName>Celeborn Worker</displayName><category>SLAVE</category><cardinality>1+</cardinality><versionAdvertised>false</versionAdvertised><commandScript><script>scripts/worker.py</script><scriptType>PYTHON</scriptType><timeout>1800</timeout></commandScript><customCommands><customCommand><name>VERSION_CHECK</name><commandScript><script>scripts/worker.py</script><scriptType>PYTHON</scriptType><timeout>1800</timeout></commandScript></customCommand></customCommands></component></components>
   <osSpecifics><osSpecific><osFamily>redhat8</osFamily><packages><package><name>java-17-openjdk-devel</name></package><package><name>python3-dbus</name></package><package><name>python3-gobject-base</name></package></packages></osSpecific></osSpecifics>
   <commandScript><script>scripts/service_check.py</script><scriptType>PYTHON</scriptType><timeout>600</timeout></commandScript>
-  <configuration-dependencies><config-type>celeborn-env</config-type></configuration-dependencies>
+  <configuration-dependencies><config-type>celeborn-env</config-type><config-type>celeborn-defaults</config-type><config-type>celeborn-environment</config-type><config-type>celeborn-log4j2</config-type></configuration-dependencies>
   <quickLinksConfigurations><quickLinksConfiguration><fileName>quicklinks.json</fileName><default>true</default></quickLinksConfiguration></quickLinksConfigurations>
+<themes><theme><fileName>theme.json</fileName><default>true</default></theme></themes>
 </service></services></metainfo>

@@ -166,6 +166,7 @@ def install(parameters):
 
 
 def configure(parameters):
+    from native_config import LOG4J_DEFAULT, content, environment as native_environment, properties, render_properties
     role, master, workers, host, ports, java, storage = settings(parameters)
     if role == "check":
         raise ValueError("A check cannot configure components")
@@ -182,13 +183,18 @@ def configure(parameters):
         "celeborn.worker.storage.dirs": str(storage), "celeborn.storage.availableTypes": "HDD",
         "celeborn.metrics.enabled": "true",
     }
-    owned_file(CONF / "celeborn-defaults.conf",
-               "".join(key + " " + str(value) + "\n" for key, value in sorted(values.items())), "celeborn")
+    defaults = {key: values.pop(key) for key in ("celeborn.storage.availableTypes", "celeborn.metrics.enabled")}
+    values = properties(parameters, "celeborn-defaults", values, defaults)
+    owned_file(CONF / "celeborn-defaults.conf", render_properties(values), "celeborn")
+    owned_file(CONF / "log4j2.properties", content(parameters, "celeborn-log4j2", LOG4J_DEFAULT), "celeborn")
     environment = {"JAVA_HOME": str(java), "CELEBORN_HOME": str(HOME), "CELEBORN_CONF_DIR": str(CONF),
         "CELEBORN_LOG_DIR": str(LOGS), "CELEBORN_PID_DIR": str(DATA / "run"), "CELEBORN_NO_DAEMONIZE": "1",
         "CELEBORN_LOCAL_HOSTNAME": host, "CELEBORN_MASTER_MEMORY": parameters["master_memory"],
         "CELEBORN_WORKER_MEMORY": parameters["worker_memory"],
         "CELEBORN_WORKER_OFFHEAP_MEMORY": parameters["worker_direct_memory"]}
+    extra_environment = native_environment(parameters, "celeborn-environment", environment)
+    from native_config import shell_exports
+    owned_file(CONF / "celeborn-env.sh", shell_exports(extra_environment), "celeborn")
     unit("ambari-celeborn-" + role + ".service", "celeborn", HOME / ("sbin/start-" + role + ".sh"),
          environment, DATA)
     reload_units()

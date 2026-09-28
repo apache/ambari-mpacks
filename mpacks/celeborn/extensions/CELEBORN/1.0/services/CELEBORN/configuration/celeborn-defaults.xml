@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configuration>
+  <property>
+    <name>celeborn.storage.availableTypes</name>
+    <display-name>celeborn.storage.availableTypes</display-name>
+    <value>HDD</value>
+    <description>Available storage types for this non-HA deployment. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>string</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>celeborn.metrics.enabled</name>
+    <display-name>celeborn.metrics.enabled</display-name>
+    <value>true</value>
+    <description>Enable service metrics. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>boolean</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>celeborn.worker.flusher.threads</name>
+    <display-name>celeborn.worker.flusher.threads</display-name>
+    <value>2</value>
+    <description>Disk flusher threads. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>celeborn.worker.commitFiles.threads</name>
+    <display-name>celeborn.worker.commitFiles.threads</display-name>
+    <value>4</value>
+    <description>Worker file commit threads. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>celeborn.worker.sortPartition.threads</name>
+    <display-name>celeborn.worker.sortPartition.threads</display-name>
+    <value>2</value>
+    <description>Worker sorter threads. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+  <property>
+    <name>celeborn.worker.monitor.disk.enabled</name>
+    <display-name>celeborn.worker.monitor.disk.enabled</display-name>
+    <value>true</value>
+    <description>Enable worker disk monitoring. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
+    <value-attributes><type>boolean</type></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+</configuration>
