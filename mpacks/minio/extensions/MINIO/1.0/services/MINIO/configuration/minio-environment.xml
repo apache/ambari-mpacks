@@ -13,61 +13,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
+<configuration supports_adding_forbidden="true">
   <property>
-    <name>MINIO_BROWSER</name>
-    <display-name>MINIO_BROWSER</display-name>
-    <value>on</value>
-    <description>Enable the browser console: on or off. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>MINIO_REGION_NAME</name>
-    <display-name>MINIO_REGION_NAME</display-name>
-    <value>us-east-1</value>
-    <description>S3 region name. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>MINIO_API_REQUESTS_MAX</name>
-    <display-name>MINIO_API_REQUESTS_MAX</display-name>
-    <value>0</value>
-    <description>Maximum concurrent API requests; zero uses automatic sizing. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>MINIO_API_REQUESTS_DEADLINE</name>
-    <display-name>MINIO_API_REQUESTS_DEADLINE</display-name>
-    <value>10s</value>
-    <description>Maximum time requests wait for an execution slot. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>MINIO_COMPRESSION_ENABLE</name>
-    <display-name>MINIO_COMPRESSION_ENABLE</display-name>
-    <value>off</value>
-    <description>Enable compression for eligible objects. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>MINIO_COMPRESSION_EXTENSIONS</name>
-    <display-name>MINIO_COMPRESSION_EXTENSIONS</display-name>
-    <value>.txt,.log,.csv,.json,.tar,.xml,.bin</value>
-    <description>File extensions eligible for compression. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>MINIO_COMPRESSION_MIME_TYPES</name>
-    <display-name>MINIO_COMPRESSION_MIME_TYPES</display-name>
-    <value>text/*,application/json,application/xml</value>
-    <description>MIME types eligible for compression. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
+    <name>content</name>
+    <display-name>minio.env</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+MINIO_BROWSER='on'
+MINIO_REGION_NAME='us-east-1'
+MINIO_API_REQUESTS_MAX='0'
+MINIO_API_REQUESTS_DEADLINE='10s'
+MINIO_COMPRESSION_ENABLE='off'
+MINIO_COMPRESSION_EXTENSIONS='.txt,.log,.csv,.json,.tar,.xml,.bin'
+MINIO_COMPRESSION_MIME_TYPES='text/*,application/json,application/xml'
+</value>
+    <description>Complete environment configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>minio.env</property-file-name><property-file-type>environment</property-file-type></value-attributes>
     <on-ambari-upgrade add="true"/>
   </property>
 </configuration>

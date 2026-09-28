@@ -154,6 +154,8 @@ def configure(parameters):
             "MINIO_OPTS"} or key.endswith("_FILE") for key in extra):
         raise ValueError("MinIO identity, listeners and secret files belong to basic settings")
     runtime["environment"] = extra
+    if hasattr(extra, "source"):
+        owned_file(CONF / "minio.env", extra.source, "minio", 0o600)
     owned_file(CONF / "runtime.json", json.dumps(runtime, sort_keys=True), "minio", 0o600)
     owned_file(CONF / "launcher.py", Path(__file__).with_name("launcher.py").read_text(), "minio", 0o500)
     unit("ambari-minio.service", "minio", Path("/usr/libexec/platform-python"),
