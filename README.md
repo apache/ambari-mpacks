@@ -18,6 +18,10 @@ limitations under the License.
 
 # Ambari Third-Party Management Packs
 
+The [native configuration guide](docs/native-configuration.md) describes the
+Basic Settings, Native Settings, Configuration Files and custom-property
+editors for the eight expanded service packs.
+
 This independent repository contains management definitions and runtime installers.
 Core delivery is tracked in the Ambari worktree's `docs/mpack` baseline; the
 [component expansion results](docs/component-expansion-results.md) record the
