@@ -13,61 +13,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
+<configuration supports_adding_forbidden="true">
   <property>
-    <name>master.exec-threads</name>
-    <display-name>master.exec-threads</display-name>
-    <value>100</value>
-    <description>Maximum workflow execution threads. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>master.pre-exec-threads</name>
-    <display-name>master.pre-exec-threads</display-name>
-    <value>10</value>
-    <description>Parallel command preparation threads. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>master.fetch-command-num</name>
-    <display-name>master.fetch-command-num</display-name>
-    <value>10</value>
-    <description>Commands fetched in a scheduling batch. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>master.dispatch-task-number</name>
-    <display-name>master.dispatch-task-number</display-name>
-    <value>3</value>
-    <description>Tasks dispatched per batch. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>master.heartbeat-interval</name>
-    <display-name>master.heartbeat-interval</display-name>
-    <value>10s</value>
-    <description>Master heartbeat interval. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>master.host-selector</name>
-    <display-name>master.host-selector</display-name>
-    <value>lower_weight</value>
-    <description>Worker selection algorithm. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>spring.datasource.hikari.maximum-pool-size</name>
-    <display-name>spring.datasource.hikari.maximum-pool-size</display-name>
-    <value>50</value>
-    <description>Maximum database connections. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <name>content</name>
+    <display-name>master-server/application.properties</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+master.exec-threads=100
+master.pre-exec-threads=10
+master.fetch-command-num=10
+master.dispatch-task-number=3
+master.heartbeat-interval=10s
+master.host-selector=lower_weight
+spring.datasource.hikari.maximum-pool-size=50
+</value>
+    <description>Complete properties configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>master-server/application.properties</property-file-name><property-file-type>properties</property-file-type></value-attributes>
     <on-ambari-upgrade add="true"/>
   </property>
 </configuration>

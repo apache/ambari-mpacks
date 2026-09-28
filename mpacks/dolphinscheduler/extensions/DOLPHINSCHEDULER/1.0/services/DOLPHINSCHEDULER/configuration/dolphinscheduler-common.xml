@@ -13,21 +13,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
+<configuration supports_adding_forbidden="true">
   <property>
-    <name>resource.storage.type</name>
-    <display-name>resource.storage.type</display-name>
-    <value>NONE</value>
-    <description>Resource storage backend. Add the relevant upstream resource properties before enabling HDFS or S3. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>data.basedir.path</name>
-    <display-name>data.basedir.path</display-name>
-    <value>/var/lib/dolphinscheduler/workspace</value>
-    <description>Local task working directory. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
+    <name>content</name>
+    <display-name>common.properties</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+resource.storage.type=NONE
+data.basedir.path=/var/lib/dolphinscheduler/workspace
+</value>
+    <description>Complete properties configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>common.properties</property-file-name><property-file-type>properties</property-file-type></value-attributes>
     <on-ambari-upgrade add="true"/>
   </property>
 </configuration>

@@ -16,7 +16,7 @@ limitations under the License.
 <configuration supports_adding_forbidden="true">
   <property>
     <name>content</name>
-    <display-name>dolphinscheduler-master-logback file contents</display-name>
+    <display-name>master-server/logback-spring.xml</display-name>
     <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!--
   ~ Licensed to the Apache Software Foundation (ASF) under one or more

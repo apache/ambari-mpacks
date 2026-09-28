@@ -13,37 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<configuration>
+<configuration supports_adding_forbidden="true">
   <property>
-    <name>worker.exec-threads</name>
-    <display-name>worker.exec-threads</display-name>
-    <value>100</value>
-    <description>Maximum task execution threads. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>worker.heartbeat-interval</name>
-    <display-name>worker.heartbeat-interval</display-name>
-    <value>10s</value>
-    <description>Worker heartbeat interval. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>string</type></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>worker.host-weight</name>
-    <display-name>worker.host-weight</display-name>
-    <value>100</value>
-    <description>Scheduling weight. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
-    <on-ambari-upgrade add="true"/>
-  </property>
-  <property>
-    <name>spring.datasource.hikari.maximum-pool-size</name>
-    <display-name>spring.datasource.hikari.maximum-pool-size</display-name>
-    <value>50</value>
-    <description>Maximum database connections. Restart the service to apply changes. Additional native properties can be added in Advanced.</description>
-    <value-attributes><type>int</type><minimum>0</minimum></value-attributes>
+    <name>content</name>
+    <display-name>worker-server/application.properties</display-name>
+    <value># Edit the native configuration below. Save a version and restart to apply.
+worker.exec-threads=100
+worker.heartbeat-interval=10s
+worker.host-weight=100
+spring.datasource.hikari.maximum-pool-size=50
+</value>
+    <description>Complete properties configuration. Existing scalar properties are converted using their current values when opening the current configuration version. Management identity and listener settings remain in Basic Settings.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid><property-file-name>worker-server/application.properties</property-file-name><property-file-type>properties</property-file-type></value-attributes>
     <on-ambari-upgrade add="true"/>
   </property>
 </configuration>
