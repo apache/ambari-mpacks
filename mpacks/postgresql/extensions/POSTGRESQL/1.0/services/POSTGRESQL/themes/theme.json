@@ -1,0 +1,207 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "name": "default",
+  "description": "Edit complete native configuration files; Basic Settings retains managed topology and credentials.",
+  "configuration": {
+    "layouts": [
+      {
+        "name": "default",
+        "tabs": [
+          {
+            "name": "files",
+            "display-name": "Configuration Files",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 3,
+              "sections": [
+                {
+                  "name": "postgresql-conf",
+                  "display-name": "postgresql-conf",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "postgresql-conf-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "postgresql-hba",
+                  "display-name": "postgresql-hba",
+                  "row-index": 1,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "postgresql-hba-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "postgresql-ident",
+                  "display-name": "postgresql-ident",
+                  "row-index": 2,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "postgresql-ident-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "basic",
+            "display-name": "Basic Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "postgresql-env",
+                  "display-name": "postgresql-env",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "postgresql-env-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "placement": {
+      "configuration-layout": "default",
+      "configs": [
+        {
+          "config": "postgresql-conf/content",
+          "subsection-name": "postgresql-conf-fields"
+        },
+        {
+          "config": "postgresql-hba/content",
+          "subsection-name": "postgresql-hba-fields"
+        },
+        {
+          "config": "postgresql-ident/content",
+          "subsection-name": "postgresql-ident-fields"
+        },
+        {
+          "config": "postgresql-runtime/port",
+          "subsection-name": "postgresql-env-fields"
+        },
+        {
+          "config": "postgresql-env/database",
+          "subsection-name": "postgresql-env-fields"
+        },
+        {
+          "config": "postgresql-env/unit",
+          "subsection-name": "postgresql-env-fields"
+        },
+        {
+          "config": "postgresql-env/backup_directory",
+          "subsection-name": "postgresql-env-fields"
+        },
+        {
+          "config": "postgresql-env/restore_database",
+          "subsection-name": "postgresql-env-fields"
+        },
+        {
+          "config": "postgresql-env/backup_id",
+          "subsection-name": "postgresql-env-fields"
+        }
+      ]
+    },
+    "widgets": [
+      {
+        "config": "postgresql-conf/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "postgresql-hba/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "postgresql-ident/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "postgresql-runtime/port",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "postgresql-env/database",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "postgresql-env/unit",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "postgresql-env/backup_directory",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "postgresql-env/restore_database",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "postgresql-env/backup_id",
+        "widget": {
+          "type": "text-field"
+        }
+      }
+    ]
+  }
+}

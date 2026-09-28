@@ -25,13 +25,16 @@ from pathlib import Path
 from resource_management.core.exceptions import Fail, ComponentIsNotRunning
 from resource_management.libraries.script.script import Script
 from observations import observer_python, validate_result
+from native_config import collect
 
 
 class Service(Script):
-    def observe(self, action):
+    def observe(self, action, publish=True):
         config = Script.get_config()
         params = config["commandParams"]
-        environment = config.get("configurations", {}).get("postgresql-env", {})
+        environment = dict(config.get("configurations", {}).get("postgresql-env", {}))
+        environment["port"] = config.get("configurations", {}).get("postgresql-runtime", {}).get("port", "5432")
+        environment["native_configs"] = collect(config.get("configurations", {}), "postgresql")
         request = {
             "schema_version": 1, "definition_snapshot": params["mpack_definition_snapshot"],
             "execution_id": params["mpack_execution_id"], "task_id": config.get("taskId"),
@@ -49,13 +52,23 @@ class Service(Script):
                 raise Fail("Service action has no bounded structured result")
             with result.open(encoding="utf-8") as output:
                 observation = json.load(output)
+            if observation.get("outcome") == "UNRESOLVED":
+                for key in ("schema_version", "definition_snapshot", "execution_id", "task_id", "action"):
+                    if type(observation.get(key)) is not type(request[key]) or observation.get(key) != request[key]:
+                        raise Fail("Service failure result belongs to another execution")
+                if not isinstance(observation.get("observations"), dict):
+                    raise Fail("Service failure result has no structured observations")
+                if publish:
+                    self.put_structured_out({"software_observation": observation})
+                raise Fail(observation["observations"].get("configuration_error") or "Service action failed; inspect the structured error type")
             try:
                 validate_result(request, observation)
             except ValueError as error:
                 raise Fail(str(error))
             if process.returncode != 0 or observation.get("outcome") != "APPLIED":
                 raise Fail("Service action did not produce a verified result")
-            self.put_structured_out({"software_observation": observation})
+            if publish:
+                self.put_structured_out({"software_observation": observation})
             return observation
 
     def install(self, env):
@@ -68,7 +81,6 @@ class Service(Script):
         self.observe("configure")
 
     def start(self, env):
-        self.configure(env)
         self.observe("start")
 
     def stop(self, env):
@@ -76,7 +88,7 @@ class Service(Script):
 
     def status(self, env):
         try:
-            self.observe("health")
+            self.observe("health", publish=False)
         except Fail:
             raise ComponentIsNotRunning()
 

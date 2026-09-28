@@ -30,5 +30,6 @@ limitations under the License.
     <osSpecific><osFamily>ubuntu22</osFamily><packages><package><name>postgresql-14</name></package><package><name>postgresql-client-14</name></package><package><name>python3-apt</name></package><package><name>python3-dbus</name></package><package><name>python3-gi</name></package><package><name>python3-psycopg2</name></package></packages></osSpecific>
   </osSpecifics>
   <commandScript><script>scripts/service_check.py</script><scriptType>PYTHON</scriptType><timeout>120</timeout></commandScript>
-  <configuration-dependencies><config-type>postgresql-env</config-type></configuration-dependencies>
+  <configuration-dependencies><config-type>postgresql-env</config-type><config-type>postgresql-conf</config-type><config-type>postgresql-hba</config-type><config-type>postgresql-ident</config-type><config-type>postgresql-runtime</config-type></configuration-dependencies>
+<themes><theme><fileName>theme.json</fileName><default>true</default></theme></themes>
 </service></services></metainfo>

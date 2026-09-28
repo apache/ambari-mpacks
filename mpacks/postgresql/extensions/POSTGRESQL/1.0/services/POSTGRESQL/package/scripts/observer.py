@@ -28,6 +28,8 @@ from pathlib import Path
 
 from observations import (atomic_json, contained_in, observer_python, package_observation,
                           platform_identity, unit_observation, validate_request, validate_result)
+from content_files import render, transaction, result as action_result
+from native_config import ConfigurationError
 
 
 def database_name(value):
@@ -98,7 +100,24 @@ def worker(request):
         raise ValueError("Database observations must execute as the database OS account")
     action = request["action"]
     parameters = request["parameters"]
+    port = int(parameters.get("port", "5432"))
+    if not 1 <= port <= 65535:
+        raise ValueError("Invalid PostgreSQL port")
+    os.environ["PGPORT"] = str(port)
     source = database_name(parameters.get("database", "postgres"))
+    if action == "configuration":
+        with connect(source) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT count(*) FROM pg_file_settings WHERE error IS NOT NULL")
+                if cursor.fetchone()[0] != 0:
+                    raise ConfigurationError("PostgreSQL reported configuration file errors")
+                cursor.execute("SELECT count(*) FROM pg_hba_file_rules WHERE error IS NOT NULL")
+                if cursor.fetchone()[0] != 0:
+                    raise ConfigurationError("PostgreSQL reported authentication file errors")
+                cursor.execute("SELECT current_setting('port'), current_setting('config_file'), current_setting('hba_file'), current_setting('ident_file')")
+                row = cursor.fetchone()
+                return {"port": int(row[0]), "config_file": row[1], "hba_file": row[2], "ident_file": row[3],
+                        "configuration_errors": 0, "authentication_errors": 0}
     if action in {"health", "version"}:
         with connect(source) as connection:
             return inventory(connection)
@@ -178,6 +197,66 @@ def worker(request):
     raise ValueError("Unsupported database observation")
 
 
+def observe_database(request):
+    process = subprocess.run(["/usr/sbin/runuser", "-u", "postgres", "--", observer_python(),
+                              str(Path(__file__).resolve()), "--worker"],
+                             input=json.dumps(request).encode("utf-8"), stdout=subprocess.PIPE,
+                             stderr=subprocess.DEVNULL, timeout=3500, check=False)
+    result = json.loads(process.stdout)
+    validate_result(request, result)
+    if process.returncode != 0:
+        raise RuntimeError("Database operation did not complete")
+    return result["observations"]
+
+
+def configure_content(request, rocky, unit, activate=False):
+    data = Path("/var/lib/pgsql/data" if rocky else "/var/lib/postgresql/14/main")
+    root = data if rocky else Path("/etc/postgresql/14/main")
+    port = int(request["parameters"].get("port", "5432"))
+    if not 1 <= port <= 65535:
+        raise ConfigurationError("PostgreSQL port must be between 1 and 65535")
+    variables = {"data_directory": str(data), "hba_file": str(root / "pg_hba.conf"),
+                 "ident_file": str(root / "pg_ident.conf"), "socket_directory": "/var/run/postgresql", "port": port}
+    contents = {}
+    for kind, filename in (("postgresql-conf", "postgresql.conf"), ("postgresql-hba", "pg_hba.conf"),
+                           ("postgresql-ident", "pg_ident.conf")):
+        value = render(request["parameters"], kind, variables)
+        if value is not None:
+            contents[filename] = value
+    if not contents:
+        return None
+    if unit != ("postgresql.service" if rocky else "postgresql@14-main.service"):
+        raise ConfigurationError("Content management requires the platform's declared PostgreSQL instance")
+    binary = "/usr/bin/postgres" if rocky else "/usr/lib/postgresql/14/bin/postgres"
+    def validate(staged):
+        conf = staged.get("postgresql.conf", root / "postgresql.conf")
+        for key, expected in (("port", str(port)), ("data_directory", str(data)),
+                              ("hba_file", str(root / "pg_hba.conf")), ("ident_file", str(root / "pg_ident.conf")),
+                              ("unix_socket_directories", "/var/run/postgresql")):
+            # -C is PostgreSQL's documented single-setting query, not a log/status parser.
+            process = subprocess.run(["/usr/sbin/runuser", "-u", "postgres", "--", binary,
+                "-D", str(data), "-c", "config_file=" + str(conf), "-C", key],
+                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=30, check=False)
+            if process.returncode != 0 or process.stdout.decode("utf-8").strip() != expected:
+                raise ConfigurationError("Invalid PostgreSQL configuration or conflicting managed setting: " + key)
+    with transaction(root, contents, validate, "postgres") as files:
+        observed = {"files": files, "port": port}
+        if activate:
+            try:
+                observed["systemd"] = unit_observation(unit, "start")
+                observed["database"] = observe_database(dict(request, action="configuration"))
+                if observed["database"]["port"] != port:
+                    raise ConfigurationError("PostgreSQL started with a different port")
+                for key, filename in (("config_file", "postgresql.conf"), ("hba_file", "pg_hba.conf"),
+                                      ("ident_file", "pg_ident.conf")):
+                    if observed["database"][key] != str(root / filename):
+                        raise ConfigurationError("PostgreSQL loaded a different managed file: " + key)
+            except Exception:
+                unit_observation(unit, "stop")
+                raise
+        return observed
+
+
 def execute(request):
     action = request["action"]
     rocky = platform_identity() == ("rocky", "8")
@@ -186,10 +265,10 @@ def execute(request):
         raise ValueError("Invalid PostgreSQL unit identity")
     observed = {"software": package_observation("postgresql-server" if rocky else "postgresql-14")}
     if action == "package":
-        return dict(request, outcome="APPLIED", observations=observed)
-    if action in {"start", "stop"}:
+        return action_result(request, "APPLIED", observed)
+    if action == "stop":
         observed["systemd"] = unit_observation(unit, action)
-    elif action == "configure":
+    elif action in {"configure", "start"}:
         if rocky:
             data = Path("/var/lib/pgsql/data")
             marker = data / "PG_VERSION"
@@ -210,7 +289,10 @@ def execute(request):
             expected = observed["software"]["version"].split(".")[0]
             if marker.read_text(encoding="ascii").strip() != expected:
                 raise RuntimeError("PostgreSQL data version does not match the installed package")
-        observed["configuration"] = {"mode": "OS_MANAGED", "unit": unit}
+        configured = configure_content(request, rocky, unit, activate=action == "start")
+        observed["configuration"] = configured or {"mode": "OS_MANAGED", "unit": unit}
+        if action == "start" and configured is None:
+            observed["systemd"] = unit_observation(unit, "start")
     elif action in {"health", "version", "backup", "restore"}:
         if action == "health":
             observed["systemd"] = unit_observation(unit)
@@ -227,22 +309,25 @@ def execute(request):
         observed["database"] = result["observations"]
     else:
         raise ValueError("Unsupported PostgreSQL operation")
-    return dict(request, outcome="APPLIED", observations=observed)
+    return action_result(request, "APPLIED", observed)
 
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "--worker":
         request = validate_request(json.load(sys.stdin))
         try:
-            print(json.dumps(dict(request, outcome="APPLIED", observations=worker(request)), allow_nan=False))
+            print(json.dumps(action_result(request, "APPLIED", worker(request)), allow_nan=False))
         except Exception as error:
-            print(json.dumps(dict(request, outcome="UNRESOLVED", observations={"error_type": type(error).__name__})))
+            print(json.dumps(action_result(request, "UNRESOLVED", {"error_type": type(error).__name__})))
             raise SystemExit(1)
     else:
         request = validate_request(json.loads(Path(sys.argv[1]).read_text(encoding="utf-8")))
         try:
             result = execute(request)
         except Exception as error:
-            atomic_json(sys.argv[2], dict(request, outcome="UNRESOLVED", observations={"error_type": type(error).__name__}))
+            details = {"error_type": type(error).__name__}
+            if isinstance(error, ConfigurationError):
+                details["configuration_error"] = str(error)
+            atomic_json(sys.argv[2], action_result(request, "UNRESOLVED", details))
             raise SystemExit(1)
         atomic_json(sys.argv[2], result)
