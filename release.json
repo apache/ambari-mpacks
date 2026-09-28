@@ -8,43 +8,43 @@
     },
     "nginx": {
       "path": "mpacks/nginx",
-      "version": "1.0.0.4"
+      "version": "1.0.1.1"
     },
     "postgresql": {
       "path": "mpacks/postgresql",
-      "version": "1.0.0.5"
+      "version": "1.0.1.1"
     },
     "kyuubi": {
       "path": "mpacks/kyuubi",
-      "version": "1.0.0.11"
+      "version": "1.0.1.0"
     },
     "airflow": {
       "path": "mpacks/airflow",
-      "version": "1.0.0.6"
+      "version": "1.0.1.0"
     },
     "celeborn": {
       "path": "mpacks/celeborn",
-      "version": "1.0.0.2"
+      "version": "1.0.1.0"
     },
     "dolphinscheduler": {
       "path": "mpacks/dolphinscheduler",
-      "version": "1.0.0.5"
+      "version": "1.0.1.0"
     },
     "trino": {
       "path": "mpacks/trino",
-      "version": "1.0.0.4"
+      "version": "1.0.1.0"
     },
     "doris": {
       "path": "mpacks/doris",
-      "version": "1.0.0.7"
+      "version": "1.0.1.0"
     },
     "elasticsearch": {
       "path": "mpacks/elasticsearch",
-      "version": "1.0.0.5"
+      "version": "1.0.1.0"
     },
     "minio": {
       "path": "mpacks/minio",
-      "version": "1.0.0.5"
+      "version": "1.0.1.0"
     }
   }
 }

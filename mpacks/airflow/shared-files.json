@@ -20,7 +20,12 @@
     {
       "source": "shared/native_config.py",
       "target": "extensions/AIRFLOW/1.0/services/AIRFLOW/package/scripts/native_config.py",
-      "digest": "897599c88c2fbbe3d238e02b519ae1b89c09f57bada53a688e216ac79484308e"
+      "digest": "6e32076f70695e572a73d76009e1d1cc862d93d5f44ca59700b9894b27203b02"
+    },
+    {
+      "source": "shared/content_formats.py",
+      "target": "extensions/AIRFLOW/1.0/services/AIRFLOW/package/scripts/content_formats.py",
+      "digest": "75400402680d22b12a5e72d936eaa2e1c7ed0dcc442b6ccaa572e6251483a331"
     }
   ]
 }

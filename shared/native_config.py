@@ -63,18 +63,36 @@ def validate_properties(values, name, multiline=False):
 
 def properties(parameters, name, managed=None, defaults=None, reserved=()):
     values = section(parameters, name)
-    validate_properties(values, name)
+    from content_formats import Document, parse_environment, parse_properties, parse_yaml
+    if "content" in values:
+        # Content is authoritative; old scalar properties are migration inputs only.
+        source = values["content"]
+        parser = parse_yaml if name == "elasticsearch-settings" else parse_environment if name in {
+            "kyuubi-environment", "celeborn-environment", "minio-environment"} else parse_properties
+        try:
+            values = parser(source)
+        except Exception:
+            raise ConfigurationError("Invalid native file content: " + name)
+    validate_properties(values, name, multiline=isinstance(values, Document))
     managed = {key: str(value) for key, value in (managed or {}).items()}
     for key, value in values.items():
-        if key.startswith(tuple(reserved)) or key in managed and value != managed[key]:
+        if key.startswith(tuple(reserved)) and key not in managed or key in managed and value != managed[key]:
             raise ConfigurationError("Property is managed by the basic settings: " + name + "/" + key)
     result = {key: str(value) for key, value in (defaults or {}).items()}
     result.update(values)
     result.update(managed)
+    if isinstance(values, Document):
+        document = Document(result, values.source, values.format_name)
+        document.explicit = values.explicit
+        return document
     return result
 
 
 def render_properties(values):
+    from content_formats import Document, preserve
+    if isinstance(values, Document):
+        return preserve(values, render_properties({key: value for key, value in values.items()
+                                                  if key not in values.explicit}))
     validate_properties(values, "properties")
     def escape(value):
         value = value.replace("\\", "\\\\").replace("\t", "\\t").replace(" ", "\\ ")
@@ -87,6 +105,9 @@ def render_properties(values):
 
 
 def overlay_properties(original, values):
+    from content_formats import Document
+    if isinstance(values, Document):
+        return render_properties(values)
     lines, skipping = [], False
     for line in original.splitlines():
         if not skipping:
@@ -135,10 +156,18 @@ def environment(parameters, name, managed=None):
 
 
 def shell_exports(values):
-    return "".join("export " + key + "=" + shlex.quote(value) + "\n" for key, value in sorted(values.items()))
+    from content_formats import Document
+    comments = ""
+    if isinstance(values, Document):
+        comments = "\n".join(line for line in values.source.splitlines() if not line.strip() or line.lstrip().startswith("#")) + "\n"
+    return comments + "".join("export " + key + "=" + shlex.quote(value) + "\n" for key, value in sorted(values.items()))
 
 
 def yaml_properties(values):
+    from content_formats import Document, preserve
+    if isinstance(values, Document):
+        return preserve(values, yaml_properties({key: value for key, value in values.items()
+                                                if key not in values.explicit}))
     # JSON scalar/array notation is valid YAML and avoids implicit YAML coercions.
     result = []
     for key, value in sorted(values.items()):

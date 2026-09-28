@@ -3,7 +3,7 @@
   "schema_version": 1,
   "type": "full-release",
   "name": "minio",
-  "version": "1.0.0.5",
+  "version": "1.0.1.0",
   "description": "MinIO source-built single-node object storage",
   "artifacts": [{"name": "minio-definitions", "type": "extension-definitions", "source_dir": "extensions"}],
   "dependencies": [{"name": "generic-base", "version": "1.0.0.3"}]

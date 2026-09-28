@@ -6,6 +6,21 @@
       "source": "shared/observations.py",
       "target": "extensions/POSTGRESQL/1.0/services/POSTGRESQL/package/scripts/observations.py",
       "digest": "8fb22532d4012faf25c2f38a56bbd713738016716fa6c0606fb56b46ce194a99"
+    },
+    {
+      "source": "shared/native_config.py",
+      "target": "extensions/POSTGRESQL/1.0/services/POSTGRESQL/package/scripts/native_config.py",
+      "digest": "6e32076f70695e572a73d76009e1d1cc862d93d5f44ca59700b9894b27203b02"
+    },
+    {
+      "source": "shared/content_formats.py",
+      "target": "extensions/POSTGRESQL/1.0/services/POSTGRESQL/package/scripts/content_formats.py",
+      "digest": "75400402680d22b12a5e72d936eaa2e1c7ed0dcc442b6ccaa572e6251483a331"
+    },
+    {
+      "source": "shared/content_files.py",
+      "target": "extensions/POSTGRESQL/1.0/services/POSTGRESQL/package/scripts/content_files.py",
+      "digest": "cadfb727f3d2d71ea37950b216a9a80792730e1026ec3a1d7510386f4d264b6b"
     }
   ]
 }
