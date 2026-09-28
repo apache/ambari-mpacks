@@ -1,0 +1,16 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "name": "default",
+  "description": "MinIO S3 and Console endpoints",
+  "configuration": {
+    "protocol": {"type": "http"},
+    "links": [
+      {"name": "minio_console", "label": "MinIO Console", "requires_user_name": "false",
+       "component_name": "MINIO_SERVER", "url": "%@://%@:%@/",
+       "port": {"http_property": "console_port", "http_default_port": "9001", "regex": "^(\\d+)$", "site": "minio-env"}},
+      {"name": "minio_api", "label": "MinIO S3 API", "requires_user_name": "false",
+       "component_name": "MINIO_SERVER", "url": "%@://%@:%@/minio/health/live",
+       "port": {"http_property": "api_port", "http_default_port": "9000", "regex": "^(\\d+)$", "site": "minio-env"}}
+    ]
+  }
+}

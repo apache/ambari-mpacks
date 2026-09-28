@@ -1,0 +1,16 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "schema_version": 1,
+  "software_version": "RELEASE.2025-10-15T17-29-55Z",
+  "source_commit": "9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a",
+  "source_license": "AGPL-3.0",
+  "source": {
+    "url": "https://codeload.github.com/minio/minio/tar.gz/9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a",
+    "sha512": "9b4ff0a68f615a1fd646b0ef0125930f71dfa6afbba4a5eb819a5d5f016c7363fefb9c6d45e0afc4742ffb6c1bec5987c471c3ed2bf0a32f68749546b9a9144a"
+  },
+  "build": {"go_toolchain": "go1.24.8", "os": "linux", "arch": "arm64",
+    "minio_sha256": "36a65e472ca0a0a3a209ca0ab10d1966e8e089d92b7466a7e45df8d1e4d6708f",
+    "check_s3_sha256": "109e7e9ec52bcc3816d082309b24ddc1aa424b748c02abf899b7044c01e5eb40"},
+  "topology": "SINGLE_SERVER",
+  "validation_status": "IMPLEMENTED_PENDING_ACCEPTANCE"
+}

@@ -240,16 +240,18 @@ class ExpansionTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     airflow.check_dag("http://service.test", {}, execution)
 
-    def test_password_metadata_and_minio_release_exclusion(self):
+    def test_password_metadata_and_source_built_minio_definition(self):
         from xml.etree import ElementTree
         config = ROOT / "mpacks/airflow/extensions/AIRFLOW/1.0/services/AIRFLOW/configuration/airflow-env.xml"
         properties = {p.findtext("name"): p for p in ElementTree.parse(config).getroot().findall("property")}
         for name in ("database_password", "admin_password"):
             self.assertEqual(properties[name].findtext("property-type"), "PASSWORD")
             self.assertFalse(properties[name].findtext("value"))
-        release = json.loads((ROOT / "release.json").read_text())
-        self.assertNotIn("minio", release["packs"])
-        self.assertFalse((ROOT / "mpacks/minio/mpack.json").exists())
+        self.assertTrue((ROOT / "mpacks/minio/mpack.json").exists())
+        minio_config = ROOT / "mpacks/minio/extensions/MINIO/1.0/services/MINIO/configuration/minio-env.xml"
+        minio_properties = {p.findtext("name"): p for p in ElementTree.parse(minio_config).getroot().findall("property")}
+        self.assertEqual(minio_properties["root_password"].findtext("property-type"), "PASSWORD")
+        self.assertFalse(minio_properties["root_password"].findtext("value"))
 
 
 if __name__ == "__main__":

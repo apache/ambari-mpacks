@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configuration>
+  <property><name>server_host</name><value></value><description>Derived from the assigned MinIO Server.</description><value-attributes><empty-value-valid>true</empty-value-valid></value-attributes><on-ambari-upgrade add="true"/></property>
+  <property><name>api_port</name><value>9000</value><description>S3 API port.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>console_port</name><value>9001</value><description>Embedded MinIO Console port.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>data_directory</name><value>/var/lib/minio/data</value><description>Persistent single-node object data. Definition removal does not delete it.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>root_user</name><value></value><description>Explicit MinIO root access key; no default credential is installed.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>root_password</name><value></value><description>Explicit MinIO root secret key; minimum twelve characters.</description><property-type>PASSWORD</property-type><value-attributes><type>password</type></value-attributes><on-ambari-upgrade add="true"/></property>
+  <property><name>go_home</name><value>/usr/local/go</value><description>Go installation able to select toolchain 1.24.8. The exact built Linux/ARM64 binary digest is verified.</description><on-ambari-upgrade add="true"/></property>
+  <property><name>source_url</name><value></value><description>Optional HTTPS mirror of the pinned source archive. Its SHA-512 must match.</description><value-attributes><empty-value-valid>true</empty-value-valid></value-attributes><on-ambari-upgrade add="true"/></property>
+</configuration>

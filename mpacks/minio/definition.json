@@ -1,10 +1,10 @@
 {
   "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
   "schema_version": 1,
-  "status": "DRAFT_NO_INSTALLATION",
+  "status": "IMPLEMENTED_PENDING_ACCEPTANCE",
   "service_name": "MINIO",
   "display_name": "MinIO",
-  "proposed_stack": {
+  "target_stack": {
     "stack_name": "GENERIC",
     "stack_version": "1.0"
   },
@@ -17,7 +17,7 @@
       "console_port": 9001
     }
   ],
-  "software_source": null,
-  "installable": false,
-  "reason": "The user deferred software installation until a package source is selected. Excluded from release.json and deployment bundles."
+  "software_source": "Pinned GitHub source commit 9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a; built with Go 1.24.8 for Linux ARM64",
+  "installable": true,
+  "reason": "The user subsequently requested source-built installation. Live deployment acceptance remains pending."
 }
