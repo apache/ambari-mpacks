@@ -157,9 +157,26 @@ def install(parameters):
 
 
 def configure(parameters):
+    from native_config import content, jvm_options, overlay_properties, properties, render_properties, section
     role, host, db_host, db_port, name, user, password, zk_host, zk_port, api_port, admin, java = settings(parameters)
     if role != "server":
         raise ValueError("A service check cannot configure DolphinScheduler")
+    rendered = {}
+    protected = ("springdatasourceurl", "springdatasourceusername", "springdatasourcepassword",
+                 "springprofiles", "registrytype", "registryzookeeperconnectstring", "serverport",
+                 "workertenantautocreate")
+    for component in ROLES:
+        name_type = "dolphinscheduler-" + component[:-7]
+        values = properties(parameters, name_type)
+        if any(re.sub(r"[^a-z0-9]", "", key.lower()).startswith(protected) for key in values):
+            raise ValueError("Database, registry and listener settings belong to basic settings")
+        rendered[component] = render_properties(values)
+    common = properties(parameters, "dolphinscheduler-common")
+    jvm = jvm_options(parameters, "dolphinscheduler-jvm",
+                      "-server\n-Duser.timezone=UTC\n-XX:+ExitOnOutOfMemoryError\n")
+    heap = section(parameters, "dolphinscheduler-runtime").get("heap_size", "1g")
+    if not re.fullmatch(r"[1-9][0-9]*[mgMG]", heap):
+        raise ValueError("DolphinScheduler heap requires an explicit JVM size")
     installed()
     for path in (CONF, DATA, DATA / "logs", DATA / "workspace"):
         directory(path, "dolphinscheduler")
@@ -178,6 +195,13 @@ def configure(parameters):
                 owned_file(destination, item.read_text(), "dolphinscheduler")
             else:
                 raise ValueError("Unsupported DolphinScheduler configuration member")
+        owned_file(config / "application.properties", rendered[component], "dolphinscheduler", 0o600)
+        if (source / "common.properties").is_file():
+            owned_file(config / "common.properties", overlay_properties(
+                (source / "common.properties").read_text(), common), "dolphinscheduler", 0o600)
+        logging_type = "dolphinscheduler-" + component[:-7] + "-logback"
+        owned_file(config / "logback-spring.xml", content(parameters, logging_type,
+                   (source / "logback-spring.xml").read_text(), xml=True), "dolphinscheduler")
         libraries = custom / "libs"
         expected = HOME / component / "libs"
         if libraries.is_symlink():
@@ -201,6 +225,7 @@ def configure(parameters):
         "database_url": "jdbc:postgresql://" + db_host + ":" + str(db_port) + "/" + name,
         "database_user": user, "database_password": password,
         "zookeeper": zk_host + ":" + str(zk_port), "api_port": api_port}
+    runtime["java_opts"] = " ".join(["-Xms256m", "-Xmx" + heap] + jvm)
     owned_file(CONF / "runtime.json", json.dumps(runtime, sort_keys=True), "dolphinscheduler", 0o600)
     owned_file(CONF / "launcher.py", Path(__file__).with_name("launcher.py").read_text(),
                "dolphinscheduler", 0o500)

@@ -26,7 +26,7 @@ def main():
         raise ValueError("Invalid DolphinScheduler role")
     role = sys.argv[1]
     values = json.loads(Path("/etc/dolphinscheduler/ambari/runtime.json").read_text())
-    if set(values) != {"home", "java_home", "database_url", "database_user", "database_password",
+    if set(values) - {"java_opts"} != {"home", "java_home", "database_url", "database_user", "database_password",
                        "zookeeper", "api_port"}:
         raise ValueError("Invalid protected DolphinScheduler configuration")
     home = Path(values["home"])
@@ -37,7 +37,7 @@ def main():
                        REGISTRY_TYPE="zookeeper", REGISTRY_ZOOKEEPER_CONNECT_STRING=values["zookeeper"],
                        DOLPHINSCHEDULER_HOME=str(Path("/etc/dolphinscheduler/ambari") / role),
                        WORKER_TENANT_AUTO_CREATE="false",
-                       JAVA_OPTS="-server -Duser.timezone=UTC -Xms256m -Xmx1g -XX:+ExitOnOutOfMemoryError")
+                       JAVA_OPTS=values.get("java_opts", "-server -Duser.timezone=UTC -Xms256m -Xmx1g -XX:+ExitOnOutOfMemoryError"))
     environment.pop("SERVER_PORT", None)
     if role == "api-server":
         environment["SERVER_PORT"] = str(values["api_port"])

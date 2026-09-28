@@ -1,0 +1,619 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "name": "default",
+  "description": "Basic settings, native tuning and complete configuration files. Custom properties remain available in Advanced.",
+  "configuration": {
+    "layouts": [
+      {
+        "name": "default",
+        "tabs": [
+          {
+            "name": "basic",
+            "display-name": "Basic Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "dolphinscheduler-env",
+                  "display-name": "dolphinscheduler-env",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-env-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "tuning",
+            "display-name": "Native Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 6,
+              "sections": [
+                {
+                  "name": "dolphinscheduler-alert",
+                  "display-name": "dolphinscheduler-alert",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-alert-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "dolphinscheduler-api",
+                  "display-name": "dolphinscheduler-api",
+                  "row-index": 1,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-api-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "dolphinscheduler-common",
+                  "display-name": "dolphinscheduler-common",
+                  "row-index": 2,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-common-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "dolphinscheduler-master",
+                  "display-name": "dolphinscheduler-master",
+                  "row-index": 3,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-master-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "dolphinscheduler-runtime",
+                  "display-name": "dolphinscheduler-runtime",
+                  "row-index": 4,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-runtime-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "dolphinscheduler-worker",
+                  "display-name": "dolphinscheduler-worker",
+                  "row-index": 5,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-worker-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "files",
+            "display-name": "Configuration Files",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 5,
+              "sections": [
+                {
+                  "name": "dolphinscheduler-alert-logback",
+                  "display-name": "dolphinscheduler-alert-logback",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-alert-logback-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "dolphinscheduler-api-logback",
+                  "display-name": "dolphinscheduler-api-logback",
+                  "row-index": 1,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-api-logback-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "dolphinscheduler-jvm",
+                  "display-name": "dolphinscheduler-jvm",
+                  "row-index": 2,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-jvm-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "dolphinscheduler-master-logback",
+                  "display-name": "dolphinscheduler-master-logback",
+                  "row-index": 3,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-master-logback-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                },
+                {
+                  "name": "dolphinscheduler-worker-logback",
+                  "display-name": "dolphinscheduler-worker-logback",
+                  "row-index": 4,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-columns": 1,
+                  "section-rows": 1,
+                  "subsections": [
+                    {
+                      "name": "dolphinscheduler-worker-logback-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "placement": {
+      "configuration-layout": "default",
+      "configs": [
+        {
+          "config": "dolphinscheduler-env/server_host",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/api_port",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/database_host",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/database_port",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/database_name",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/database_user",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/database_password",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/zookeeper_host",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/zookeeper_port",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/admin_password",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/java_home",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-env/binary_url",
+          "subsection-name": "dolphinscheduler-env-fields"
+        },
+        {
+          "config": "dolphinscheduler-alert/spring.datasource.hikari.maximum-pool-size",
+          "subsection-name": "dolphinscheduler-alert-fields"
+        },
+        {
+          "config": "dolphinscheduler-api/server.servlet.session.timeout",
+          "subsection-name": "dolphinscheduler-api-fields"
+        },
+        {
+          "config": "dolphinscheduler-api/spring.datasource.hikari.maximum-pool-size",
+          "subsection-name": "dolphinscheduler-api-fields"
+        },
+        {
+          "config": "dolphinscheduler-common/resource.storage.type",
+          "subsection-name": "dolphinscheduler-common-fields"
+        },
+        {
+          "config": "dolphinscheduler-common/data.basedir.path",
+          "subsection-name": "dolphinscheduler-common-fields"
+        },
+        {
+          "config": "dolphinscheduler-master/master.exec-threads",
+          "subsection-name": "dolphinscheduler-master-fields"
+        },
+        {
+          "config": "dolphinscheduler-master/master.pre-exec-threads",
+          "subsection-name": "dolphinscheduler-master-fields"
+        },
+        {
+          "config": "dolphinscheduler-master/master.fetch-command-num",
+          "subsection-name": "dolphinscheduler-master-fields"
+        },
+        {
+          "config": "dolphinscheduler-master/master.dispatch-task-number",
+          "subsection-name": "dolphinscheduler-master-fields"
+        },
+        {
+          "config": "dolphinscheduler-master/master.heartbeat-interval",
+          "subsection-name": "dolphinscheduler-master-fields"
+        },
+        {
+          "config": "dolphinscheduler-master/master.host-selector",
+          "subsection-name": "dolphinscheduler-master-fields"
+        },
+        {
+          "config": "dolphinscheduler-master/spring.datasource.hikari.maximum-pool-size",
+          "subsection-name": "dolphinscheduler-master-fields"
+        },
+        {
+          "config": "dolphinscheduler-runtime/heap_size",
+          "subsection-name": "dolphinscheduler-runtime-fields"
+        },
+        {
+          "config": "dolphinscheduler-worker/worker.exec-threads",
+          "subsection-name": "dolphinscheduler-worker-fields"
+        },
+        {
+          "config": "dolphinscheduler-worker/worker.heartbeat-interval",
+          "subsection-name": "dolphinscheduler-worker-fields"
+        },
+        {
+          "config": "dolphinscheduler-worker/worker.host-weight",
+          "subsection-name": "dolphinscheduler-worker-fields"
+        },
+        {
+          "config": "dolphinscheduler-worker/spring.datasource.hikari.maximum-pool-size",
+          "subsection-name": "dolphinscheduler-worker-fields"
+        },
+        {
+          "config": "dolphinscheduler-alert-logback/content",
+          "subsection-name": "dolphinscheduler-alert-logback-fields"
+        },
+        {
+          "config": "dolphinscheduler-api-logback/content",
+          "subsection-name": "dolphinscheduler-api-logback-fields"
+        },
+        {
+          "config": "dolphinscheduler-jvm/content",
+          "subsection-name": "dolphinscheduler-jvm-fields"
+        },
+        {
+          "config": "dolphinscheduler-master-logback/content",
+          "subsection-name": "dolphinscheduler-master-logback-fields"
+        },
+        {
+          "config": "dolphinscheduler-worker-logback/content",
+          "subsection-name": "dolphinscheduler-worker-logback-fields"
+        }
+      ]
+    },
+    "widgets": [
+      {
+        "config": "dolphinscheduler-env/server_host",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/api_port",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/database_host",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/database_port",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/database_name",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/database_user",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/database_password",
+        "widget": {
+          "type": "password"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/zookeeper_host",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/zookeeper_port",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/admin_password",
+        "widget": {
+          "type": "password"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/java_home",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-env/binary_url",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-alert/spring.datasource.hikari.maximum-pool-size",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-api/server.servlet.session.timeout",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-api/spring.datasource.hikari.maximum-pool-size",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-common/resource.storage.type",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-common/data.basedir.path",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-master/master.exec-threads",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-master/master.pre-exec-threads",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-master/master.fetch-command-num",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-master/master.dispatch-task-number",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-master/master.heartbeat-interval",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-master/master.host-selector",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-master/spring.datasource.hikari.maximum-pool-size",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-runtime/heap_size",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-worker/worker.exec-threads",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-worker/worker.heartbeat-interval",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-worker/worker.host-weight",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-worker/spring.datasource.hikari.maximum-pool-size",
+        "widget": {
+          "type": "text-field"
+        }
+      },
+      {
+        "config": "dolphinscheduler-alert-logback/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "dolphinscheduler-api-logback/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "dolphinscheduler-jvm/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "dolphinscheduler-master-logback/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "dolphinscheduler-worker-logback/content",
+        "widget": {
+          "type": "text-area"
+        }
+      }
+    ]
+  }
+}

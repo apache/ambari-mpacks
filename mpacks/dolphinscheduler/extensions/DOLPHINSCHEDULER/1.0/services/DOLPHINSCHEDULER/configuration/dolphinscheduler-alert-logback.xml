@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configuration supports_adding_forbidden="true">
+  <property>
+    <name>content</name>
+    <display-name>dolphinscheduler-alert-logback file contents</display-name>
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  --&gt;
+
+&lt;configuration scan="true" scanPeriod="120 seconds"&gt;
+    &lt;property name="log.base" value="logs"/&gt;
+
+    &lt;appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;
+                [%level] %date{yyyy-MM-dd HH:mm:ss.SSS Z} %logger{96}:[%line] - %msg%n
+            &lt;/pattern&gt;
+            &lt;charset&gt;UTF-8&lt;/charset&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name="ALERTLOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender"&gt;
+        &lt;file&gt;${log.base}/dolphinscheduler-alert.log&lt;/file&gt;
+        &lt;rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"&gt;
+            &lt;fileNamePattern&gt;${log.base}/dolphinscheduler-alert.%d{yyyy-MM-dd_HH}.%i.log&lt;/fileNamePattern&gt;
+            &lt;maxHistory&gt;20&lt;/maxHistory&gt;
+            &lt;maxFileSize&gt;64MB&lt;/maxFileSize&gt;
+            &lt;totalSizeCap&gt;50GB&lt;/totalSizeCap&gt;
+            &lt;cleanHistoryOnStart&gt;true&lt;/cleanHistoryOnStart&gt;
+        &lt;/rollingPolicy&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;
+                [%level] %date{yyyy-MM-dd HH:mm:ss.SSS Z} %logger{96}:[%line] - %msg%n
+            &lt;/pattern&gt;
+            &lt;charset&gt;UTF-8&lt;/charset&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;root level="INFO"&gt;
+        &lt;if condition="${DOCKER:-false}"&gt;
+            &lt;then&gt;
+                &lt;appender-ref ref="STDOUT"/&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+        &lt;appender-ref ref="ALERTLOGFILE"/&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</value>
+    <description>Complete alert logback-spring.xml for DolphinScheduler 3.1.9.</description>
+    <value-attributes><type>content</type><empty-value-valid>true</empty-value-valid></value-attributes>
+    <on-ambari-upgrade add="true"/>
+  </property>
+</configuration>
