@@ -1,0 +1,99 @@
+{
+  "$comment": "Licensed to the Apache Software Foundation (ASF) under one or more\ncontributor license agreements. See the NOTICE file distributed with\nthis work for additional information regarding copyright ownership.\nThe ASF licenses this file to You under the Apache License, Version 2.0\n(the \"License\"); you may not use this file except in compliance with\nthe License. You may obtain a copy of the License at\nhttp://www.apache.org/licenses/LICENSE-2.0\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+  "name": "default",
+  "description": "Edit complete native configuration files; Basic Settings retains managed topology and credentials.",
+  "configuration": {
+    "layouts": [
+      {
+        "name": "default",
+        "tabs": [
+          {
+            "name": "files",
+            "display-name": "Configuration Files",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "nginx-conf",
+                  "display-name": "nginx-conf",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "nginx-conf-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "basic",
+            "display-name": "Basic Settings",
+            "layout": {
+              "tab-columns": 1,
+              "tab-rows": 1,
+              "sections": [
+                {
+                  "name": "nginx-env",
+                  "display-name": "nginx-env",
+                  "row-index": 0,
+                  "column-index": 0,
+                  "row-span": 1,
+                  "column-span": 1,
+                  "section-rows": 1,
+                  "section-columns": 1,
+                  "subsections": [
+                    {
+                      "name": "nginx-env-fields",
+                      "row-index": 0,
+                      "column-index": 0,
+                      "row-span": 1,
+                      "column-span": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "placement": {
+      "configuration-layout": "default",
+      "configs": [
+        {
+          "config": "nginx-conf/content",
+          "subsection-name": "nginx-conf-fields"
+        },
+        {
+          "config": "nginx-env/listen_port",
+          "subsection-name": "nginx-env-fields"
+        }
+      ]
+    },
+    "widgets": [
+      {
+        "config": "nginx-conf/content",
+        "widget": {
+          "type": "text-area"
+        }
+      },
+      {
+        "config": "nginx-env/listen_port",
+        "widget": {
+          "type": "text-field"
+        }
+      }
+    ]
+  }
+}
