@@ -18,50 +18,81 @@ limitations under the License.
 
 # Ambari Third-Party Management Packs
 
-The [configuration file guide](docs/content-configuration.md) describes the
-complete content editors for all ten service packs, including PostgreSQL and
-Nginx, and the migration of existing scalar configuration values.
+English | [简体中文](README.zh-CN.md)
 
-This independent repository contains management definitions and runtime installers.
-Core delivery is tracked in the Ambari worktree's `docs/mpack` baseline; the
-[component expansion results](docs/component-expansion-results.md) record the
-Airflow and Celeborn basic acceptance scope.
-The [five-component implementation record](docs/five-component-implementation.md)
-tracks the newer DolphinScheduler, Trino, Doris, Elasticsearch and MinIO packs.
-The current acceptance target is Rocky Linux 8 on aarch64 with systemd.
-The existing Ubuntu definitions are retained but Ubuntu deployment and testing
-are excluded from this run. Nginx and PostgreSQL use operating-system packages
-without Hadoop or stack-select. [Kyuubi](mpacks/kyuubi/README.md) extends the
-BIGTOP environment and uses its existing Spark, Hadoop and ZooKeeper services.
-Airflow uses an isolated Python environment and an external PostgreSQL 14-18
-database. Celeborn uses a pinned official binary with a single master topology.
-MinIO now uses a fixed source build after the subsequent request superseded its
-earlier non-installable draft. The five newer packs have completed basic Rocky
-deployment, restart and service-check acceptance; the implementation record
-lists exact versions, test evidence and the remaining topology/security limits.
+This repository holds independently versioned third-party management packs for
+Apache Ambari. It contains service definitions, configuration templates, and
+runtime installers; the `ambari-mpack` authoring and HTTP client tool lives in
+Ambari core. A pack describes how Ambari manages a service. Importing a pack
+does **not** install that service on any host.
 
-Install the version-pinned `ambari-mpack` tooling published by Ambari core.
-`release.json` selects the current package sources and exact management-definition
-versions. Build with `ambari-mpack build --all --bundle mpackstore` and upload
-with the same HTTP-only client. No command in this repository modifies the server
-filesystem or database. Configure software sources through Ambari repository
-records; package versions do not stand in for installed software observations.
+## Scope And Compatibility
 
-## Distribute The Complete Store
+The current basic acceptance target is Rocky Linux 8 on aarch64 with systemd.
+Ubuntu definitions are retained but were not exercised in the current acceptance
+run. The component READMEs and [acceptance records](docs/five-component-implementation.md)
+describe tested versions, host prerequisites, topology limits, and remaining
+security gaps. These basic tests are not a production or HA certification.
 
-Build all versions selected by `release.json` into one transport bundle:
+The complete store contains one shared package and ten service packages:
+
+| Package | Role and important prerequisite | Details |
+| --- | --- | --- |
+| `generic-base` | Shared definitions used by the service packs | [Package](mpacks/generic-base/) |
+| `nginx` | OS-managed Nginx, without Hadoop or stack-select | [Package](mpacks/nginx/) |
+| `postgresql` | OS-managed PostgreSQL, without Hadoop or stack-select | [Package](mpacks/postgresql/) |
+| `kyuubi` | Extends the BIGTOP Spark, Hadoop, and ZooKeeper environment | [README](mpacks/kyuubi/README.md) |
+| `airflow` | Isolated Python environment and an external PostgreSQL 14-18 database | [README](mpacks/airflow/README.md) |
+| `celeborn` | Pinned official binary; basic single-master topology | [README](mpacks/celeborn/README.md) |
+| `dolphinscheduler` | Service-specific runtime and configuration | [README](mpacks/dolphinscheduler/README.md) |
+| `trino` | Service-specific runtime and configuration | [README](mpacks/trino/README.md) |
+| `doris` | Service-specific runtime and configuration | [README](mpacks/doris/README.md) |
+| `elasticsearch` | Service-specific runtime and configuration | [README](mpacks/elasticsearch/README.md) |
+| `minio` | Fixed source build, not the earlier definition-only draft | [README](mpacks/minio/README.md) |
+
+`release.json` is the authoritative index of package paths and exact management
+definition versions. These versions are **not** observations of installed host
+software. `profiles/infrastructure.json` selects only `generic-base`, `nginx`,
+and `postgresql` when a smaller bundle is needed. `tooling.lock` records the
+compatible authoring tool and manifest schema versions.
+
+## Build A Store Bundle
+
+Use Python 3.10 or newer in an isolated environment and install the compatible
+`ambari-mpack` tool from an Ambari core checkout. Check `tooling.lock` before
+choosing a tool version. With a virtual environment already activated:
 
 ```sh
+python3 -m pip install /path/to/ambari/dev-support/mpack
+ambari-mpack --help
+```
+
+From this repository root, validate a pack and build all versions selected by
+`release.json`:
+
+```sh
+ambari-mpack --json validate mpacks/nginx
 ambari-mpack --json build --all --repository . --output dist --bundle mpackstore
 ```
 
-Distribute `dist/mpackstore.bundle.tar.gz`. Users open Management Packs in Ambari,
-upload this file and select Import Packages. Import registers the complete store
-without enabling its definitions or executing package hooks. Users then choose
-services from Available Services and select a new cluster or a compatible existing
-cluster. Required provider packages and extension bindings are derived by the
-Server. The deployment wizard receives the exact selected services; importing a
-multi-service package does not deploy every service it contains.
+The build produces individually versioned archives under `dist/` and the
+transport bundle `dist/mpackstore.bundle.tar.gz`. Keep the bundle intact for
+distribution. To build only the infrastructure profile, replace `--all` with
+`--profile infrastructure` and choose a distinct bundle name. To select specific
+packs, use `--packs generic-base,nginx,postgresql` instead. Include every
+required dependency in a bundle unless it is already imported on the target
+Server. These selection modes read the same exact versions from `release.json`;
+building a bundle does not contact an Ambari Server.
+
+## Import And Select Services
+
+Use an Ambari Server that supports the HTTP Management Packs API. In the Ambari
+UI, open **Management Packs**, upload `dist/mpackstore.bundle.tar.gz`, and choose
+**Import Packages**. Import registers the complete store without enabling
+definitions or running package hooks. Then open **Available Services**, select
+the desired services, and choose a new cluster or a compatible existing cluster.
+The Server resolves required provider packages and extension bindings; selecting
+one service does not deploy every service in the bundle.
 
 The equivalent HTTP-only CLI import is:
 
@@ -70,35 +101,48 @@ ambari-mpack --server "$AMBARI_SERVER_URL" import dist/mpackstore.bundle.tar.gz
 ambari-mpack --server "$AMBARI_SERVER_URL" services
 ```
 
-Individual packages retain their versions and can be updated independently.
+Set `AMBARI_SERVER_URL` to the target server before running these commands. For
+HTTPS with a private CA, pass `--ca-file` to the CLI. The CLI prompts for the
+Ambari password in an interactive terminal; do not put it
+in a command line or repository file. For automation, provide `AMBARI_PASSWORD`
+through a protected environment or secret store. The import command waits for
+the operation by default. Keep its exact operation ID and inspect it with
+`ambari-mpack --server "$AMBARI_SERVER_URL" operations show OPERATION_ID` if
+diagnosis is needed. An interrupted submission can be resumed with `operations
+resume SUBMISSION_ID`; do not infer completion from upload success alone.
 
-The full store includes generic-base, nginx, postgresql, kyuubi,
-[airflow](mpacks/airflow/README.md), [celeborn](mpacks/celeborn/README.md),
-[DolphinScheduler](mpacks/dolphinscheduler/README.md),
-[Trino](mpacks/trino/README.md), [Doris](mpacks/doris/README.md),
-[Elasticsearch](mpacks/elasticsearch/README.md), and
-[MinIO](mpacks/minio/README.md).
-`release.json` is the authoritative version index. The `infrastructure` profile
-remains generic-base, nginx and postgresql. Earlier imported releases are retained
-for provenance. Mixed-platform
-imports do not bind every package to one stack: choose services for their
-compatible destination through the imported service catalog.
-Importing a newer store does not silently replace active definitions or upgrade
-host software. The bundle contains management definitions and scripts. The
-individual package READMEs identify host prerequisites, pinned runtime downloads
-or source builds, disk requirements, and the current acceptance status.
+## Configuration, Updates, And Recovery
 
-Package hooks which execute during online activation must declare
-`scope: "DEFINITIONS"` and honor the package's resource boundary. Hooks with an
-omitted or `SERVER` scope can be imported but cannot execute through online
-activation. This declaration does not sandbox arbitrary package code.
+The [configuration file guide](docs/content-configuration.md) covers the full
+content editors for all ten services and migration from scalar values. Existing
+saved content is not silently regenerated from package defaults. An imported
+newer package does not automatically replace active definitions or upgrade host
+software; activation and deployment are separate operations. Publish a new
+package version and update `release.json` when definitions change, rather than
+replacing an existing versioned archive.
 
-The PostgreSQL reference preserves source data. BACKUP produces a verified,
-operation-associated archive backup; RESTORE requires an explicit isolated target
-and will not overwrite a source database. Automatic failover, multi-instance
-identity, and arbitrary frontend plugins are not provided.
+Package hooks that execute during online activation must declare
+`scope: "DEFINITIONS"` and respect their package boundary. This declaration is
+not a sandbox for arbitrary code. The PostgreSQL reference's BACKUP creates a
+verified, operation-associated archive; RESTORE requires an explicit isolated
+target and will not overwrite the source database. Automatic failover,
+multi-instance identity, and arbitrary frontend plugins are not provided.
 
-For further additions, see the [component expansion plan](docs/component-expansion-plan.md).
-SeaTunnel, Superset and an Iceberg catalog service are possible next capabilities.
-Existing BIGTOP services should not acquire
-duplicate providers as a side effect of these additions.
+This repository's commands do not directly modify the Ambari Server filesystem
+or database. Configure runtime software sources through Ambari repository
+records and use authoritative operations and service checks to verify results.
+
+## Repository Guide
+
+- `mpacks/`: versioned package definitions and component-specific READMEs.
+- `shared/`: common runtime helpers included by declared package inputs.
+- `release.json`, `profiles/`, `tooling.lock`: release selection and tool contract.
+- `docs/content-configuration.md`: configuration editing and migration.
+- `docs/component-expansion-results.md` and
+  `docs/five-component-implementation.md`: acceptance evidence and limitations.
+- `docs/component-expansion-plan.md`: possible future services, including
+  SeaTunnel, Superset, and an Iceberg catalog service.
+
+Contributors can run `python3 -m unittest discover -s tests -v` for this
+repository's focused tests. Adding a service must not duplicate an existing
+BIGTOP provider as a side effect.
